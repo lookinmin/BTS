@@ -192,7 +192,7 @@
                     </constraints>
                     <properties>
                       <font name="paybooc ExtraBold" size="26" style="1"/>
-                      <text value="BTS"/>
+                      <text value="Being"/>
                     </properties>
                   </component>
                   <grid id="b63ab" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
