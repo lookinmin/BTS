@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.Arrays;
 
 import javax.swing.*;
 
@@ -16,7 +17,7 @@ public class Membership {
     private JTextField textField_3;
     private JTextField textField_4;
     private JTextField textField_5;
-    private ButtonGroup gender;
+    private JRadioButton[] radio;
 
     public static String InputID;
     public static String InputPW;
@@ -57,33 +58,29 @@ public class Membership {
         frame.getContentPane().setLayout(null);
         frame.setResizable(false);
 
-        JLabel lblNewLabel = new JLabel("\uC774\uB984");
+        JLabel lblNewLabel = new JLabel("\uC544\uC774\uB514");
         lblNewLabel.setBounds(33, 80, 88, 22);
         frame.getContentPane().add(lblNewLabel);
 
-        JLabel lblNewLabel_1 = new JLabel("\uC544\uC774\uB514");
+        JLabel lblNewLabel_1 = new JLabel("\uB2C9\uB124\uC784");
         lblNewLabel_1.setBounds(33, 130, 88, 22);
         frame.getContentPane().add(lblNewLabel_1);
 
-        JLabel lblNewLabel_2 = new JLabel("\uB2C9\uB124\uC784");
+        JLabel lblNewLabel_2 = new JLabel("\uBE44\uBC00\uBC88\uD638");
         lblNewLabel_2.setBounds(33, 180, 88, 22);
         frame.getContentPane().add(lblNewLabel_2);
 
-        JLabel lblNewLabel_3 = new JLabel("\uBE44\uBC00\uBC88\uD638");
+        JLabel lblNewLabel_3 = new JLabel("\uBE44\uBC00\uBC88\uD638 \uD655\uC778");
         lblNewLabel_3.setBounds(33, 230, 88, 22);
         frame.getContentPane().add(lblNewLabel_3);
 
-        JLabel lblNewLabel_4 = new JLabel("\uBE44\uBC00\uBC88\uD638 \uD655\uC778");
+        JLabel lblNewLabel_4 = new JLabel("\uC131\uBCC4");
         lblNewLabel_4.setBounds(33, 280, 88, 22);
         frame.getContentPane().add(lblNewLabel_4);
 
-        JLabel lblNewLabel_5 = new JLabel("\uC131\uBCC4");
+        JLabel lblNewLabel_5 = new JLabel("\uB098\uC774");
         lblNewLabel_5.setBounds(33, 330, 88, 22);
         frame.getContentPane().add(lblNewLabel_5);
-
-        JLabel lblNewLabel_5_1 = new JLabel("\uB098\uC774");
-        lblNewLabel_5_1.setBounds(33, 380, 88, 22);
-        frame.getContentPane().add(lblNewLabel_5_1);
 
         textField = new JTextField();
         textField.setColumns(10);
@@ -95,42 +92,40 @@ public class Membership {
         textField_1.setBounds(128, 127, 220, 29);
         frame.getContentPane().add(textField_1);
 
-        textField_2 = new JTextField();
+        textField_2 = new JPasswordField();
         textField_2.setColumns(10);
         textField_2.setBounds(128, 177, 220, 29);
         frame.getContentPane().add(textField_2);
 
-        textField_3 = new JTextField();
+        textField_3 = new JPasswordField();
         textField_3.setColumns(10);
         textField_3.setBounds(128, 227, 220, 29);
         frame.getContentPane().add(textField_3);
 
-        textField_4 = new JTextField();
-        textField_4.setColumns(10);
-        textField_4.setBounds(128, 277, 220, 29);
-        frame.getContentPane().add(textField_4);
 
+        radio = new JRadioButton[2];
+        String[] radio_name = {"남성", "여성"};
+       // ButtonGroup group = new ButtonGroup();
+        for(int i=0; i<radio.length; i++){
+            radio[i] = new JRadioButton(radio_name[i]);
+            //group.add(radio[i]);
+            frame.getContentPane().add(radio[i]);
+        }
 
-        JRadioButton MAN = new JRadioButton("\uB0A8");
-        MAN.setBounds(129, 329, 70, 25);
-        frame.getContentPane().add(MAN);
+        radio[0].setSelected(false);
+        radio[1].setSelected(true);
+        radio[0].setBounds(129, 280, 70, 25);
+        radio[1].setBounds(203, 280, 70, 25);
 
-        JRadioButton WOMAN = new JRadioButton("\uC5EC");
-        WOMAN.setBounds(203, 329, 70, 25);
-        frame.getContentPane().add(WOMAN);
-
-        gender = new ButtonGroup();
-        gender.add(MAN);
-        gender.add(WOMAN);
 
 
         textField_5 = new JTextField();
         textField_5.setColumns(10);
-        textField_5.setBounds(128, 373, 70, 29);
+        textField_5.setBounds(128, 330, 70, 29);
         frame.getContentPane().add(textField_5);
 
         JLabel lblNewLabel_5_1_1 = new JLabel("\uC138");
-        lblNewLabel_5_1_1.setBounds(203, 380, 88, 22);
+        lblNewLabel_5_1_1.setBounds(203, 337, 88, 22);
         frame.getContentPane().add(lblNewLabel_5_1_1);
 
         JButton Finish = new JButton("\uC644\uB8CC");
@@ -149,20 +144,38 @@ public class Membership {
 
         Finish.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                InputID = textField.getText();
-                InputPW = textField_1.getText();
-                InputNick = textField_2.getText();
-                InputSex = rdbtnNewRadioButton.getText();
-                InputAge = textField_3.getText();
-                DB_handle();
-                setVisible(false);
-                frame.dispose();
+                if(textField.getText().length() == 0 || textField_1.getText().length() == 0 || textField_2.getText().length() == 0 || textField_5.getText().length() == 0){
+                    JOptionPane.showMessageDialog(null, "모든 칸을 입력해주세요.");
+                }
+                else{
+                    if(textField_2.getText().equals(textField_3.getText())){
+                        InputID = textField.getText();
+                        InputPW = textField_2.getText();
+                        InputNick = textField_1.getText();
+                        if(radio[0].isSelected()){
+                            InputSex = "남";
+                        }
+                        else if(radio[1].isSelected()){
+                            InputSex = "여";
+                        }
+                        InputAge = textField_5.getText();
+                        try {
+                            DB_handle();
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        }
+                        setVisible(false);
+                        frame.dispose();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "비밀번호가 다릅니다.");
+                    }
+                }
             }
         });
-
     }
 
-    public static void DB_handle(){
+    public static void DB_handle() throws SQLException {
         Connection con = null;
         String server = "localhost"; // MySQL 서버 주소
         String database = "example"; // MySQL DATABASE 이름
@@ -170,10 +183,10 @@ public class Membership {
         String password = "minsu0418"; // MySQL 서버 비밀번호
         int InAge = 0;
         int InSex = 0;
-        try{
+        try {
             InAge = Integer.parseInt(InputAge);      //10대 : 1, 20대 : 2, 30대 : 3, 40대 : 4, 50대 : 5
-        } catch (NumberFormatException e){
-        } catch (Exception e){
+        } catch (NumberFormatException e) {
+        } catch (Exception e) {
         }
         // 1.드라이버 로딩
         try {
@@ -188,18 +201,18 @@ public class Membership {
             con = DriverManager.getConnection("jdbc:mysql://" + server + "/" + database + "?useSSL=false", user_name, password);
             System.out.println("정상적으로 연결되었습니다.");
 
-            if(InputSex.equals("남"))
+            if (InputSex.equals("남"))
                 InSex = 1;
             else
                 InSex = 2;
 
-            if(10<=InAge && InAge <=19)
+            if (10 <= InAge && InAge <= 19)
                 InAge = 1;
-            else if(20<=InAge && InAge <=29)
+            else if (20 <= InAge && InAge <= 29)
                 InAge = 2;
-            else if(30<=InAge && InAge <=39)
+            else if (30 <= InAge && InAge <= 39)
                 InAge = 3;
-            else if(40<=InAge && InAge <=49)
+            else if (40 <= InAge && InAge <= 49)
                 InAge = 4;
             else
                 InAge = 5;
@@ -216,7 +229,7 @@ public class Membership {
                 pstmt.setInt(5, InAge);
                 // 업데이트
                 int result = pstmt.executeUpdate();
-                if(result==1) {
+                if (result == 1) {
                     System.out.println("Board데이터 삽입 성공!");
                 }
 
@@ -225,30 +238,36 @@ public class Membership {
                 e.printStackTrace();
             }
 
-            Statement statement = con.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM example.bts");
+            try {
+                Statement statement = con.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM example.bts");
 
-            while(resultSet.next()){
-                String ID2 = resultSet.getString("ID");
-                String pW = resultSet.getString("PW");
-                String Nick = resultSet.getString("nickname");
-                int sex1 = resultSet.getInt("sex");
-                int age1 = resultSet.getInt("age");
-                System.out.println(ID2+", "+pW+", "+Nick+", "+sex1+", "+age1);
-            }
-            resultSet.close();
-            statement.close();
-            con.close();
-        } catch(SQLException e) {
-            System.err.println("con 오류:" + e.getMessage());
-            e.printStackTrace();
-        }
-
-        // 3.해제
-        try {
-            if(con != null)
+                while (resultSet.next()) {
+                    String ID2 = resultSet.getString("ID");
+                    String pW = resultSet.getString("PW");
+                    String Nick = resultSet.getString("nickname");
+                    int sex1 = resultSet.getInt("sex");
+                    int age1 = resultSet.getInt("age");
+                    System.out.println(ID2 + ", " + pW + ", " + Nick + ", " + sex1 + ", " + age1);
+                }
+                resultSet.close();
+                statement.close();
                 con.close();
-        } catch (SQLException e) {}
+            } catch (SQLException e) {
+                System.err.println("con 오류:" + e.getMessage());
+                e.printStackTrace();
+            }
+
+            // 3.해제
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
 

@@ -2,6 +2,7 @@ package Being;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Date;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -50,7 +51,7 @@ public class menu extends JFrame {
 
 
 
-        image = new ImageIcon("C:\\Users\\thrry\\Desktop\\LoginPage.jpg");//배경이미지
+        image = new ImageIcon("C:\\Users\\sdjmc\\OneDrive\\바탕화면\\LoginPage.jpg");//배경이미지
         JPanel MAINMENU = new JPanel() {
             public void paintComponent(Graphics l) {
 
@@ -98,15 +99,18 @@ public class menu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Object obj = e.getSource();
                 if(obj == btnMAINTOTREND) {
-                    trand r = new trand();
+                    trend r = null;
+                    try {
+                        r = new trend();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                     r.setVisible(true);
 
                 }
 
             }
         });
-
-
 
 
     }

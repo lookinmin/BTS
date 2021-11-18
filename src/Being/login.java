@@ -3,30 +3,21 @@ package Being;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Date;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import java.util.Scanner;
+import javax.swing.*;
 
 public class login extends JFrame{
 
-    private static ResultSet rs;
     private JFrame frame;
     private JTextField LOGIN_ID_INSERT;
     private JTextField LOGIN_PW_INSERT;
 
     private ImageIcon icon;
 
-
-
-    Date today = new Date();
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -40,37 +31,28 @@ public class login extends JFrame{
         });
     }
 
-    /**
-     * Create the application.
-     */
     public login() {
         initialize();
     }
 
-    /**
-     * Initialize the contents of the frame.
-     */
     private void initialize() {
         frame = new JFrame();
-        frame.setBounds(100, 100, 800, 520);
+        frame.setBounds(100, 100, 800, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.getContentPane().setLayout(null);
         frame.setResizable(false);
 
-
-
-        icon = new ImageIcon("C:\\Users\\ancx1\\Desktop\\bts.jpg");//배경이미지
+        icon = new ImageIcon("");//배경이미지
         JPanel LOGINPAGE = new JPanel() {
             public void paintComponent(Graphics g) {
-
                 g.drawImage(icon.getImage(), 0, 0, null);
                 setOpaque(false);
                 super.paintComponent(g);
             }
         };
 
-        LOGINPAGE.setBounds(0, 0, 800, 500); // 로그인 페이지 ui
+        LOGINPAGE.setBounds(0, 0, 1100, 700); // 로그인 페이지 ui
         frame.getContentPane().add(LOGINPAGE);
         LOGINPAGE.setLayout(null);
 
@@ -111,12 +93,17 @@ public class login extends JFrame{
         btnLOGINtoMEMBERSHIP.setBounds(657, 400, 80, 25);
         LOGINPAGE.add(btnLOGINtoMEMBERSHIP);
 
-
         btnLOGIN.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                menu r = new menu();
-                r.setVisible(true);
-                frame.dispose();
+                if(DBHandle(LOGIN_ID_INSERT.getText(), LOGIN_PW_INSERT.getText())==1){
+                    SaveIDtoFile(whatsyourname(LOGIN_ID_INSERT.getText()));
+                    menu r = new menu();
+                    r.setVisible(true);
+                    frame.dispose();
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "로그인에 실패했습니다");
+                }
             }
         });
         btnLOGINtoMEMBERSHIP.addActionListener(new ActionListener() {
@@ -126,9 +113,7 @@ public class login extends JFrame{
                 if(obj == btnLOGINtoMEMBERSHIP) {
                     Membership r = new Membership();
                     r.setVisible(true);
-
                 }
-
             }
         });
     }
@@ -155,19 +140,78 @@ public class login extends JFrame{
             con = DriverManager.getConnection("jdbc:mysql://" + server + "/" + database + "?useSSL=false", user_name, password);
             PreparedStatement pstmt = null;
 
-            pstmt = con.prepareStatement("select * from bts where ID = ? and PW = ?"); //db에서 id와 pw 테이블에 값이 존재하는지 확인
-            pstmt.setString(1, ID); //첫번째 ?에 넣음
-            pstmt.setString(2, PW); //두번째 ?에 넣음
+            Statement statement = con.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM example.bts");
 
-            rs = pstmt.executeQuery();
-
-            if(rs.next()) { //rs의 next에 값이 있으면 일치한다는 뜻
-                System.out.println("로그인 성공");
-                return 1;   //로그인 성공
+            while(resultSet.next()) {
+                String dbID = resultSet.getString("ID");
+                String dbPW = resultSet.getString("PW");
+                if (ID.equals(dbID) && PW.equals((dbPW))) {
+                    System.out.println("로그인 성공");
+                    System.out.println(dbID + ", " + dbPW);
+                    return 1;
+                }
             }
+            resultSet.close();
+            statement.close();
+            con.close();
         }catch(SQLException e) {
             e.printStackTrace();
         }
         return -1; //로그인 실패
     }
+
+    private String whatsyourname(String ID){
+        String nickname = null;
+        Connection con = null;
+        String server = "localhost"; // MySQL 서버 주소
+        String database = "example"; // MySQL DATABASE 이름
+        String user_name = "root"; //  MySQL 서버 아이디
+        String password = "minsu0418"; // MySQL 서버 비밀번호
+        // 1.드라이버 로딩
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println(" !! <JDBC 오류> Driver load 오류: " + e.getMessage());
+            e.printStackTrace();
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://" + server + "/" + database + "?useSSL=false", user_name, password);
+            PreparedStatement pstmt = null;
+
+            Statement statement = con.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM example.bts");
+
+            while(resultSet.next()) {
+                String dbID = resultSet.getString("ID");
+                String dbNick = resultSet.getString("nickname");
+                if (ID.equals(dbID)) {
+                    nickname = dbNick;
+                }
+            }
+            resultSet.close();
+            statement.close();
+            con.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return nickname;
+    }
+
+
+    private void SaveIDtoFile(String text) {
+        Scanner scanner = new Scanner(System.in);
+        FileWriter fout = null;
+        String pilePath = "C:\\Users\\ancx1\\BTS\\src\\nowID.txt";//BTS-main안 텍스트파일 생성
+        try {
+            fout = new FileWriter(pilePath);
+            fout.write(text, 0, text.length());
+            fout.write("\r\n", 0, 2);
+            fout.close();
+        } catch (IOException e) {
+            System.out.println("입출력 오류");
+        }
+        scanner.close();
+    }
+
 }
