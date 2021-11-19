@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -29,36 +30,30 @@ import javax.swing.JButton;
 public class trend extends JFrame{
 
     private JFrame frame;
-    private JTextField LOGIN_ID_INSERT;
-    private JTextField LOGIN_PW_INSERT;
 
-    private ImageIcon icon;
+    ArrayList<String> musinsa = new ArrayList<>();          //무신사에서 받은 상위 5개 종목 데이터가 들어올 배열
 
-    ArrayList<ArrayList<String>> data = new ArrayList<>(); //크롤링할 때 쓰는 변수
+    ArrayList<Integer> Item1 = new ArrayList<>();
+    ArrayList<Integer> Item2 = new ArrayList<>();
+    ArrayList<Integer> Item3 = new ArrayList<>();
+    ArrayList<Integer> Item4 = new ArrayList<>();
+    ArrayList<Integer> Item5 = new ArrayList<>();
 
-    String clientId = " XB21ieQrpllHq9Hs4dgO";
-    String clientSecret = " 7reQtMZRkV";
+    String clientId = "pkeFje1lOTUYccJW4XNe";
+    String clientSecret = "3AqiuZaCqw";
 
-    String apiUrl = "https://openapi.naver.com/v1/datalab/search";
+    String apiUrl = "https://openapi.naver.com/v1/datalab/shopping/category/keywords";
 
     Map<String, String> requestHeaders = new HashMap<>();
 
     String today, beforeWeek;
 
-    ArrayList<ArrayList<ApiData>> trendData1 = new ArrayList<>();
-    ArrayList<ArrayList<ApiData>> trendData2 = new ArrayList<>();
-    ArrayList<ArrayList<ApiData>> trendData3 = new ArrayList<>();
-    ArrayList<ArrayList<ApiData>> trendData4 = new ArrayList<>();
-    ArrayList<ArrayList<ApiData>> trendData5 = new ArrayList<>();
-    ArrayList<ArrayList<ApiData>> trendData6 = new ArrayList<>();
-    ArrayList<ArrayList<ApiData>> trendData7 = new ArrayList<>();
+
     //trendData는 상위5개 항목을 7일치 title, period, ratio저장
 
     /**
      * Launch the application.
      */
-
-
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -71,7 +66,6 @@ public class trend extends JFrame{
             }
         });
     }
-
     /**
      * Create the application.
      */
@@ -93,7 +87,7 @@ public class trend extends JFrame{
         TREND.setBounds(0, 0, 800, 500);
         frame.getContentPane().add(TREND);
         TREND.setLayout(null);
-        JButton btnTRENDTOMAIN = new JButton("\uBA54\uC778\uBA54\uB274\uB85C \uB3CC\uC544\uAC00\uAE30");
+        JButton btnTRENDTOMAIN = new JButton("\uBA54\uC778\uBA54\uB274\uB85C\uB3CC\uC544\uAC00\uAE30");
         btnTRENDTOMAIN.setBounds(598, 417, 175, 23);
         TREND.add(btnTRENDTOMAIN);
 
@@ -111,74 +105,30 @@ public class trend extends JFrame{
     }
 
     private void Crawling() throws IOException {
-        String URL = "https://datalab.naver.com/";
-        Document doc = Jsoup.connect(URL).get();
+        String URL = "https://search.musinsa.com/ranking/keyword";
 
-        Elements elem = doc.select("li[class=\" list\"]");
+        Document document = Jsoup.connect(URL).get();
 
-        int cnt = 0;
-
-        ArrayList<String> data6 = new ArrayList<>();
-        ArrayList<String> data7 = new ArrayList<>();
-        ArrayList<String> data8 = new ArrayList<>();
-        ArrayList<String> data9 = new ArrayList<>();
-        ArrayList<String> data10 = new ArrayList<>();
-        ArrayList<String> data11 = new ArrayList<>();
-        ArrayList<String> data12 = new ArrayList<>();
-
-        int n6 = 1; int n7 = 1; int n8 = 1; int n9 = 1; int n10 = 1; int n11 = 1; int n12 = 1;
-        for(Element e: elem.select("span")) {
-            cnt++;
-            if(cnt<=60){
-                if (n6 <= 5) {
-                    data6.add(e.text());
-                }
-                n6++;
-            }
-            else if(cnt<=70){
-                if (n7 <= 5) {
-                    data7.add(e.text());
-                }
-                n7++;
-            }
-            else if(cnt<=80){
-                if (n8 <= 5) {
-                    data8.add(e.text());
-                }
-                n8++;
-            }
-            else if(cnt<=90){
-                if (n9<= 5) {
-                    data9.add(e.text());
-                }
-                n9++;
-            }
-            else if(cnt<=100){
-                if (n10 <= 5) {
-                    data10.add(e.text());
-                }
-                n10++;
-            }
-            else if(cnt<=110){
-                if (n11 <= 5) {
-                    data11.add(e.text());
-                }
-                n11++;
-            }
-            else{
-                if (n12 <= 5) {
-                    data12.add(e.text());
-                }
-                n12++;
+        Elements elements= document.select("ol[class=\" sranking_list\"]");
+        int i = 0;
+        for(Element element:elements.select("p[class=\" p_srank\"]")){
+            musinsa.add(StrSplit(element));
+            i++;
+            if(i == 5){
+                break;
             }
 
         }
-//        data.add(data1); data.add(data2); data.add(data3); data.add(data4); data.add(data5);
-        data.add(data6); data.add(data7); data.add(data8);
-        data.add(data9); data.add(data10); data.add(data11); data.add(data12);
-
-        System.out.println(data.get(0));
+        System.out.println(musinsa);
     }
+
+    private static String StrSplit(Element element) {
+        String str = element.toString();
+        String[] str1 = str.split("\\.");
+        String[] str2 = str1[1].split("<");
+        return str2[0];
+    }
+
 
     private void API(){
         requestHeaders.put("X-Naver-Client-Id", clientId);
@@ -190,558 +140,222 @@ public class trend extends JFrame{
         today = date.format(Today);
 
         Calendar week = Calendar.getInstance();
-        week.add(Calendar.DATE , -8);
+        week.add(Calendar.DATE , -7);
         beforeWeek = new java.text.SimpleDateFormat("yyyy-MM-dd").format(week.getTime()); //일주일 전
         System.out.println(beforeWeek);
 
         //endDate는 입력 날짜 하루 전까지 보여줌 -> beforeWeek를 오늘 -8일 하면 7일치 저장
 
-        Day1API();
-        Day2API();
-        Day3API();
-        Day4API();
-        Day5API();
-        Day6API();
-        Day7API();
+        Item1API();
+        Item2API();
+        Item3API();
+        Item4API();
+        Item5API();
 
-        for(int i=0;i<trendData1.size();i++){
-            for(int j=0;j<trendData1.get(i).size();j++){
-                System.out.println(trendData1.get(i).get(j).getTitle());
-            }
-            System.out.println("---");
-        }
+//        for(int i=0;i<trendData1.size();i++){
+//            for(int j=0;j<trendData1.get(i).size();j++){
+//                System.out.println(trendData1.get(i).get(j).getTitle());
+//            }
+//            System.out.println("---");
+//        }
     }
 
-    private void Day1API(){
-        System.out.println("Day1");
+    private void Item1API(){
+        System.out.println("Item1");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
-                ",\"keywordGroups\":[{\"groupName\":\""+data.get(0).get(0)+"\"," + "\"keywords\":[\""+data.get(0).get(0)+"\"]}," +
-                "{\"groupName\":\""+data.get(0).get(1)+"\"," + "\"keywords\":[\""+data.get(0).get(1)+"\"]}," +
-                "{\"groupName\":\""+data.get(0).get(2)+"\"," + "\"keywords\":[\""+data.get(0).get(2)+"\"]}," +
-                "{\"groupName\":\""+data.get(0).get(3)+"\"," + "\"keywords\":[\""+data.get(0).get(3)+"\"]}," +
-                "{\"groupName\":\""+data.get(0).get(4)+"\"," + "\"keywords\":[\""+data.get(0).get(4)+"\"]}],"+
-                "\"timeUnit\":\"date\"}";
+                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsa.get(0)+"\"]}]}";
 
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
-        ArrayList<ApiData> data1 = new ArrayList<>();
-        ArrayList<ApiData> data2 = new ArrayList<>();
-        ArrayList<ApiData> data3 = new ArrayList<>();
-        ArrayList<ApiData> data4 = new ArrayList<>();
-        ArrayList<ApiData> data5 = new ArrayList<>();
+        try{
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
+            JSONArray jsonArray = (JSONArray) jsonObject.get("results");
 
-        int cnt = 0;
+            JSONObject jsonObject1 = (JSONObject) jsonArray.get(0);
 
-        try {
-            for(int i=0;i<5;i++) {
-                JSONParser jsonParse = new JSONParser(); //JSONParse에 json데이터를 넣어 파싱한 다음 JSONObject로 변환한다.
-                JSONObject jsonObj = (JSONObject) jsonParse.parse(responseBody); //JSONObject에서 PersonsArray를 get하여 JSONArray에 저장한다.
-                JSONArray personArray = (JSONArray) jsonObj.get("results"); //result를 먼저 파싱
-                JSONObject personObject = (JSONObject) personArray.get(i);
+            JSONArray jsonArray1 = (JSONArray) jsonObject1.get("data");
+            System.out.println(jsonArray1);
+            for(Object o :jsonArray1) {
+                JSONObject object = (JSONObject) o;
 
-                JSONArray tmpArr = (JSONArray) personObject.get("data");
+                double dRatio;
+                Long lRatio;
 
-                for (Object o : tmpArr) {
-                    JSONObject object = (JSONObject) o;
-                    String title = (String) personObject.get("title");
-                    String period = (String) object.get("period");
-                    double dRatio;
-                    Long lRatio;
-
-                    if (object.get("ratio").getClass().getName().equals("java.lang.Double")){
-                        dRatio = (double) object.get("ratio");
-                        switch (cnt / 7) {
-                            case 0 -> data1.add(new ApiData(title, period, dRatio));
-                            case 1 -> data2.add(new ApiData(title, period, dRatio));
-                            case 2 -> data3.add(new ApiData(title, period, dRatio));
-                            case 3 -> data4.add(new ApiData(title, period, dRatio));
-                            case 4 -> data5.add(new ApiData(title, period, dRatio));
-                            default -> {
-                            }
-                        }
-
-                    }
-                    else{
-                        lRatio = (Long) object.get("ratio");
-                        double newRatio = (double) lRatio;
-                        switch (cnt / 7) {
-                            case 0 -> data1.add(new ApiData(title, period, newRatio));
-                            case 1 -> data2.add(new ApiData(title, period, newRatio));
-                            case 2 -> data3.add(new ApiData(title, period, newRatio));
-                            case 3 -> data4.add(new ApiData(title, period, newRatio));
-                            case 4 -> data5.add(new ApiData(title, period, newRatio));
-                            default -> {
-                            }
-                        }
-                    }
-                    cnt++;
+                if (object.get("ratio").getClass().getName().equals("java.lang.Double")) {
+                    dRatio = (double) object.get("ratio");
                 }
+                else {
+                    lRatio = (Long) object.get("ratio");
+                    dRatio = (double) lRatio;
+                }
+
+                int tmp = (int)dRatio;
+                Item1.add(tmp);
+                System.out.println(tmp);
             }
-        }
-        catch (org.json.simple.parser.ParseException e) {
+        }catch (org.json.simple.parser.ParseException e){
             e.printStackTrace();
         }
-
-        System.out.println(data1.size());
-
-        trendData1.add(data1);
-        trendData1.add(data2);
-        trendData1.add(data3);
-        trendData1.add(data4);
-        trendData1.add(data5);
     }
-    private void Day2API(){
-        System.out.println("Day2");
+
+    private void Item2API(){
+        System.out.println("Item2");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
-                ",\"keywordGroups\":[{\"groupName\":\""+data.get(1).get(0)+"\"," + "\"keywords\":[\""+data.get(1).get(0)+"\"]}," +
-                "{\"groupName\":\""+data.get(1).get(1)+"\"," + "\"keywords\":[\""+data.get(1).get(1)+"\"]}," +
-                "{\"groupName\":\""+data.get(1).get(2)+"\"," + "\"keywords\":[\""+data.get(1).get(2)+"\"]}," +
-                "{\"groupName\":\""+data.get(1).get(3)+"\"," + "\"keywords\":[\""+data.get(1).get(3)+"\"]}," +
-                "{\"groupName\":\""+data.get(1).get(4)+"\"," + "\"keywords\":[\""+data.get(1).get(4)+"\"]}],"+
-                "\"timeUnit\":\"date\"}";
+                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsa.get(1)+"\"]}]}";
 
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
-        ArrayList<ApiData> data1 = new ArrayList<>();
-        ArrayList<ApiData> data2 = new ArrayList<>();
-        ArrayList<ApiData> data3 = new ArrayList<>();
-        ArrayList<ApiData> data4 = new ArrayList<>();
-        ArrayList<ApiData> data5 = new ArrayList<>();
+        try{
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
+            JSONArray jsonArray = (JSONArray) jsonObject.get("results");
 
-        int cnt = 0;
+            JSONObject jsonObject1 = (JSONObject) jsonArray.get(0);
 
-        try {
-            for(int i=0;i<5;i++) {
-                JSONParser jsonParse = new JSONParser(); //JSONParse에 json데이터를 넣어 파싱한 다음 JSONObject로 변환한다.
-                JSONObject jsonObj = (JSONObject) jsonParse.parse(responseBody); //JSONObject에서 PersonsArray를 get하여 JSONArray에 저장한다.
-                JSONArray personArray = (JSONArray) jsonObj.get("results"); //result를 먼저 파싱
-                JSONObject personObject = (JSONObject) personArray.get(i);
+            JSONArray jsonArray1 = (JSONArray) jsonObject1.get("data");
+            System.out.println(jsonArray1);
+            for(Object o :jsonArray1) {
+                JSONObject object = (JSONObject) o;
 
-                JSONArray tmpArr = (JSONArray) personObject.get("data");
+                double dRatio;
+                Long lRatio;
 
-                for (Object o : tmpArr) {
-                    JSONObject object = (JSONObject) o;
-                    String title = (String) personObject.get("title");
-                    String period = (String) object.get("period");
-                    double dRatio;
-                    Long lRatio;
-
-                    if (object.get("ratio").getClass().getName().equals("java.lang.Double")){
-                        dRatio = (double) object.get("ratio");
-                        switch (cnt / 7) {
-                            case 0 -> data1.add(new ApiData(title, period, dRatio));
-                            case 1 -> data2.add(new ApiData(title, period, dRatio));
-                            case 2 -> data3.add(new ApiData(title, period, dRatio));
-                            case 3 -> data4.add(new ApiData(title, period, dRatio));
-                            case 4 -> data5.add(new ApiData(title, period, dRatio));
-                            default -> {
-                            }
-                        }
-                    }
-                    else{
-                        lRatio = (Long) object.get("ratio");
-                        double newRatio = (double) lRatio;
-                        switch (cnt / 7) {
-                            case 0 -> data1.add(new ApiData(title, period, newRatio));
-                            case 1 -> data2.add(new ApiData(title, period, newRatio));
-                            case 2 -> data3.add(new ApiData(title, period, newRatio));
-                            case 3 -> data4.add(new ApiData(title, period, newRatio));
-                            case 4 -> data5.add(new ApiData(title, period, newRatio));
-                            default -> {
-                            }
-                        }
-                    }
-                    cnt++;
+                if (object.get("ratio").getClass().getName().equals("java.lang.Double")) {
+                    dRatio = (double) object.get("ratio");
                 }
+                else {
+                    lRatio = (Long) object.get("ratio");
+                    dRatio = (double) lRatio;
+                }
+
+                int tmp = (int)dRatio;
+                Item2.add(tmp);
+                System.out.println(tmp);
             }
-        }
-        catch (org.json.simple.parser.ParseException e) {
+        }catch (org.json.simple.parser.ParseException e){
             e.printStackTrace();
         }
 
-        trendData2.add(data1);
-        trendData2.add(data2);
-        trendData2.add(data3);
-        trendData2.add(data4);
-        trendData2.add(data5);
     }
-    private void Day3API(){
-        System.out.println("Day3");
+
+    private void Item3API(){
+        System.out.println("Item3");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
-                ",\"keywordGroups\":[{\"groupName\":\""+data.get(2).get(0)+"\"," + "\"keywords\":[\""+data.get(2).get(0)+"\"]}," +
-                "{\"groupName\":\""+data.get(2).get(1)+"\"," + "\"keywords\":[\""+data.get(2).get(1)+"\"]}," +
-                "{\"groupName\":\""+data.get(2).get(2)+"\"," + "\"keywords\":[\""+data.get(2).get(2)+"\"]}," +
-                "{\"groupName\":\""+data.get(2).get(3)+"\"," + "\"keywords\":[\""+data.get(2).get(3)+"\"]}," +
-                "{\"groupName\":\""+data.get(2).get(4)+"\"," + "\"keywords\":[\""+data.get(2).get(4)+"\"]}],"+
-                "\"timeUnit\":\"date\"}";
+                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsa.get(2)+"\"]}]}";
 
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
+        try{
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
+            JSONArray jsonArray = (JSONArray) jsonObject.get("results");
 
-        ArrayList<ApiData> data1 = new ArrayList<>();
-        ArrayList<ApiData> data2 = new ArrayList<>();
-        ArrayList<ApiData> data3 = new ArrayList<>();
-        ArrayList<ApiData> data4 = new ArrayList<>();
-        ArrayList<ApiData> data5 = new ArrayList<>();
+            JSONObject jsonObject1 = (JSONObject) jsonArray.get(0);
 
-        int cnt = 0;
+            JSONArray jsonArray1 = (JSONArray) jsonObject1.get("data");
+            System.out.println(jsonArray1);
+            for(Object o :jsonArray1) {
+                JSONObject object = (JSONObject) o;
 
-        try {
-            for(int i=0;i<5;i++) {
-                JSONParser jsonParse = new JSONParser(); //JSONParse에 json데이터를 넣어 파싱한 다음 JSONObject로 변환한다.
-                JSONObject jsonObj = (JSONObject) jsonParse.parse(responseBody); //JSONObject에서 PersonsArray를 get하여 JSONArray에 저장한다.
-                JSONArray personArray = (JSONArray) jsonObj.get("results"); //result를 먼저 파싱
-                JSONObject personObject = (JSONObject) personArray.get(i);
+                double dRatio;
+                Long lRatio;
 
-                JSONArray tmpArr = (JSONArray) personObject.get("data");
-
-                for (Object o : tmpArr) {
-                    JSONObject object = (JSONObject) o;
-                    String title = (String) personObject.get("title");
-                    String period = (String) object.get("period");
-                    double dRatio;
-                    Long lRatio;
-
-                    if (object.get("ratio").getClass().getName().equals("java.lang.Double")){
-                        dRatio = (double) object.get("ratio");
-                        switch (cnt / 7) {
-                            case 0 -> data1.add(new ApiData(title, period, dRatio));
-                            case 1 -> data2.add(new ApiData(title, period, dRatio));
-                            case 2 -> data3.add(new ApiData(title, period, dRatio));
-                            case 3 -> data4.add(new ApiData(title, period, dRatio));
-                            case 4 -> data5.add(new ApiData(title, period, dRatio));
-                            default -> {
-                            }
-                        }
-                    }
-                    else{
-                        lRatio = (Long) object.get("ratio");
-                        double newRatio = (double) lRatio;
-                        switch (cnt / 7) {
-                            case 0 -> data1.add(new ApiData(title, period, newRatio));
-                            case 1 -> data2.add(new ApiData(title, period, newRatio));
-                            case 2 -> data3.add(new ApiData(title, period, newRatio));
-                            case 3 -> data4.add(new ApiData(title, period, newRatio));
-                            case 4 -> data5.add(new ApiData(title, period, newRatio));
-                            default -> {
-                            }
-                        }
-                    }
-                    cnt++;
+                if (object.get("ratio").getClass().getName().equals("java.lang.Double")) {
+                    dRatio = (double) object.get("ratio");
                 }
+                else {
+                    lRatio = (Long) object.get("ratio");
+                    dRatio = (double) lRatio;
+                }
+
+                int tmp = (int)dRatio;
+                Item3.add(tmp);
+                System.out.println(tmp);
             }
-        }
-        catch (org.json.simple.parser.ParseException e) {
+        }catch (org.json.simple.parser.ParseException e){
             e.printStackTrace();
         }
-
-        trendData3.add(data1);
-        trendData3.add(data2);
-        trendData3.add(data3);
-        trendData3.add(data4);
-        trendData3.add(data5);
     }
-    private void Day4API(){
-        System.out.println("Day4");
+
+    private void Item4API(){
+        System.out.println("Item4");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
-                ",\"keywordGroups\":[{\"groupName\":\""+data.get(3).get(0)+"\"," + "\"keywords\":[\""+data.get(3).get(0)+"\"]}," +
-                "{\"groupName\":\""+data.get(3).get(1)+"\"," + "\"keywords\":[\""+data.get(3).get(1)+"\"]}," +
-                "{\"groupName\":\""+data.get(3).get(2)+"\"," + "\"keywords\":[\""+data.get(3).get(2)+"\"]}," +
-                "{\"groupName\":\""+data.get(3).get(3)+"\"," + "\"keywords\":[\""+data.get(3).get(3)+"\"]}," +
-                "{\"groupName\":\""+data.get(3).get(4)+"\"," + "\"keywords\":[\""+data.get(3).get(4)+"\"]}],"+
-                "\"timeUnit\":\"date\"}";
+                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsa.get(3)+"\"]}]}";
 
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
-        ArrayList<ApiData> data1 = new ArrayList<>();
-        ArrayList<ApiData> data2 = new ArrayList<>();
-        ArrayList<ApiData> data3 = new ArrayList<>();
-        ArrayList<ApiData> data4 = new ArrayList<>();
-        ArrayList<ApiData> data5 = new ArrayList<>();
+        try{
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
+            JSONArray jsonArray = (JSONArray) jsonObject.get("results");
 
-        int cnt = 0;
+            JSONObject jsonObject1 = (JSONObject) jsonArray.get(0);
 
-        try {
-            for(int i=0;i<5;i++) {
-                JSONParser jsonParse = new JSONParser(); //JSONParse에 json데이터를 넣어 파싱한 다음 JSONObject로 변환한다.
-                JSONObject jsonObj = (JSONObject) jsonParse.parse(responseBody); //JSONObject에서 PersonsArray를 get하여 JSONArray에 저장한다.
-                JSONArray personArray = (JSONArray) jsonObj.get("results"); //result를 먼저 파싱
-                JSONObject personObject = (JSONObject) personArray.get(i);
+            JSONArray jsonArray1 = (JSONArray) jsonObject1.get("data");
+            System.out.println(jsonArray1);
+            for(Object o :jsonArray1) {
+                JSONObject object = (JSONObject) o;
 
-                JSONArray tmpArr = (JSONArray) personObject.get("data");
+                double dRatio;
+                Long lRatio;
 
-                for (Object o : tmpArr) {
-
-                    JSONObject object = (JSONObject) o;
-                    String title = (String) personObject.get("title");
-                    String period = (String) object.get("period");
-                    double dRatio;
-                    Long lRatio;
-
-                    if (object.get("ratio").getClass().getName().equals("java.lang.Double")){
-                        dRatio = (double) object.get("ratio");
-                        switch (cnt / 7) {
-                            case 0 -> data1.add(new ApiData(title, period, dRatio));
-                            case 1 -> data2.add(new ApiData(title, period, dRatio));
-                            case 2 -> data3.add(new ApiData(title, period, dRatio));
-                            case 3 -> data4.add(new ApiData(title, period, dRatio));
-                            case 4 -> data5.add(new ApiData(title, period, dRatio));
-                            default -> {
-                            }
-                        }
-                    }
-                    else{
-                        lRatio = (Long) object.get("ratio");
-                        double newRatio = (double) lRatio;
-                        switch (cnt / 7) {
-                            case 0 -> data1.add(new ApiData(title, period, newRatio));
-                            case 1 -> data2.add(new ApiData(title, period, newRatio));
-                            case 2 -> data3.add(new ApiData(title, period, newRatio));
-                            case 3 -> data4.add(new ApiData(title, period, newRatio));
-                            case 4 -> data5.add(new ApiData(title, period, newRatio));
-                            default -> {
-                            }
-                        }
-                    }
-                    cnt++;
+                if (object.get("ratio").getClass().getName().equals("java.lang.Double")) {
+                    dRatio = (double) object.get("ratio");
                 }
+                else {
+                    lRatio = (Long) object.get("ratio");
+                    dRatio = (double) lRatio;
+                }
+
+                int tmp = (int)dRatio;
+                Item4.add(tmp);
+                System.out.println(tmp);
             }
-        }
-        catch (org.json.simple.parser.ParseException e) {
+        }catch (org.json.simple.parser.ParseException e){
             e.printStackTrace();
         }
-
-        trendData4.add(data1);
-        trendData4.add(data2);
-        trendData4.add(data3);
-        trendData4.add(data4);
-        trendData4.add(data5);
     }
-    private void Day5API(){
-        System.out.println("Day5");
+
+    private void Item5API(){
+        System.out.println("Item5");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
-                ",\"keywordGroups\":[{\"groupName\":\""+data.get(4).get(0)+"\"," + "\"keywords\":[\""+data.get(4).get(0)+"\"]}," +
-                "{\"groupName\":\""+data.get(4).get(1)+"\"," + "\"keywords\":[\""+data.get(4).get(1)+"\"]}," +
-                "{\"groupName\":\""+data.get(4).get(2)+"\"," + "\"keywords\":[\""+data.get(4).get(2)+"\"]}," +
-                "{\"groupName\":\""+data.get(4).get(3)+"\"," + "\"keywords\":[\""+data.get(4).get(3)+"\"]}," +
-                "{\"groupName\":\""+data.get(4).get(4)+"\"," + "\"keywords\":[\""+data.get(4).get(4)+"\"]}],"+
-                "\"timeUnit\":\"date\"}";
+                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsa.get(4)+"\"]}]}";
 
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
-        ArrayList<ApiData> data1 = new ArrayList<>();
-        ArrayList<ApiData> data2 = new ArrayList<>();
-        ArrayList<ApiData> data3 = new ArrayList<>();
-        ArrayList<ApiData> data4 = new ArrayList<>();
-        ArrayList<ApiData> data5 = new ArrayList<>();
+        System.out.println(responseBody);
 
-        int cnt = 0;
+        try{
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(responseBody);
+            JSONArray jsonArray = (JSONArray) jsonObject.get("results");
 
-        try {
-            for(int i=0;i<5;i++) {
-                JSONParser jsonParse = new JSONParser(); //JSONParse에 json데이터를 넣어 파싱한 다음 JSONObject로 변환한다.
-                JSONObject jsonObj = (JSONObject) jsonParse.parse(responseBody); //JSONObject에서 PersonsArray를 get하여 JSONArray에 저장한다.
-                JSONArray personArray = (JSONArray) jsonObj.get("results"); //result를 먼저 파싱
-                JSONObject personObject = (JSONObject) personArray.get(i);
+            JSONObject jsonObject1 = (JSONObject) jsonArray.get(0);
 
-                JSONArray tmpArr = (JSONArray) personObject.get("data");
+            JSONArray jsonArray1 = (JSONArray) jsonObject1.get("data");
+            System.out.println(jsonArray1);
+            for(Object o :jsonArray1) {
+                JSONObject object = (JSONObject) o;
 
-                for (Object o : tmpArr) {
-                    JSONObject object = (JSONObject) o;
-                    String title = (String) personObject.get("title");
-                    String period = (String) object.get("period");
-                    double dRatio;
-                    Long lRatio;
+                double dRatio;
+                Long lRatio;
 
-                    if (object.get("ratio").getClass().getName().equals("java.lang.Double")){
-                        dRatio = (double) object.get("ratio");
-                        switch (cnt / 7) {
-                            case 0 -> data1.add(new ApiData(title, period, dRatio));
-                            case 1 -> data2.add(new ApiData(title, period, dRatio));
-                            case 2 -> data3.add(new ApiData(title, period, dRatio));
-                            case 3 -> data4.add(new ApiData(title, period, dRatio));
-                            case 4 -> data5.add(new ApiData(title, period, dRatio));
-                            default -> {
-                            }
-                        }
-                    }
-                    else{
-                        lRatio = (Long) object.get("ratio");
-                        double newRatio = (double) lRatio;
-                        switch (cnt / 7) {
-                            case 0 -> data1.add(new ApiData(title, period, newRatio));
-                            case 1 -> data2.add(new ApiData(title, period, newRatio));
-                            case 2 -> data3.add(new ApiData(title, period, newRatio));
-                            case 3 -> data4.add(new ApiData(title, period, newRatio));
-                            case 4 -> data5.add(new ApiData(title, period, newRatio));
-                            default -> {
-                            }
-                        }
-                    }
-                    cnt++;
+                if (object.get("ratio").getClass().getName().equals("java.lang.Double")) {
+                    dRatio = (double) object.get("ratio");
                 }
+                else {
+                    lRatio = (Long) object.get("ratio");
+                    dRatio = (double) lRatio;
+                }
+
+                int tmp = (int)dRatio;
+                Item5.add(tmp);
+                System.out.println(tmp);
             }
-        }
-        catch (org.json.simple.parser.ParseException e) {
+        }catch (org.json.simple.parser.ParseException e){
             e.printStackTrace();
         }
-
-        trendData5.add(data1);
-        trendData5.add(data2);
-        trendData5.add(data3);
-        trendData5.add(data4);
-        trendData5.add(data5);
-    }
-    private void Day6API(){
-        System.out.println("Day6");
-        String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
-                ",\"keywordGroups\":[{\"groupName\":\""+data.get(5).get(0)+"\"," + "\"keywords\":[\""+data.get(5).get(0)+"\"]}," +
-                "{\"groupName\":\""+data.get(5).get(1)+"\"," + "\"keywords\":[\""+data.get(5).get(1)+"\"]}," +
-                "{\"groupName\":\""+data.get(5).get(2)+"\"," + "\"keywords\":[\""+data.get(5).get(2)+"\"]}," +
-                "{\"groupName\":\""+data.get(5).get(3)+"\"," + "\"keywords\":[\""+data.get(5).get(3)+"\"]}," +
-                "{\"groupName\":\""+data.get(5).get(4)+"\"," + "\"keywords\":[\""+data.get(5).get(4)+"\"]}],"+
-                "\"timeUnit\":\"date\"}";
-
-        String responseBody = post(apiUrl, requestHeaders, requestBody);
-
-        ArrayList<ApiData> data1 = new ArrayList<>();
-        ArrayList<ApiData> data2 = new ArrayList<>();
-        ArrayList<ApiData> data3 = new ArrayList<>();
-        ArrayList<ApiData> data4 = new ArrayList<>();
-        ArrayList<ApiData> data5 = new ArrayList<>();
-
-        int cnt = 0;
-
-        try {
-            for(int i=0;i<5;i++) {
-                JSONParser jsonParse = new JSONParser(); //JSONParse에 json데이터를 넣어 파싱한 다음 JSONObject로 변환한다.
-                JSONObject jsonObj = (JSONObject) jsonParse.parse(responseBody); //JSONObject에서 PersonsArray를 get하여 JSONArray에 저장한다.
-                JSONArray personArray = (JSONArray) jsonObj.get("results"); //result를 먼저 파싱
-                JSONObject personObject = (JSONObject) personArray.get(i);
-
-                JSONArray tmpArr = (JSONArray) personObject.get("data");
-
-                for (Object o : tmpArr) {
-                    JSONObject object = (JSONObject) o;
-                    String title = (String) personObject.get("title");
-                    String period = (String) object.get("period");
-                    double dRatio;
-                    Long lRatio;
-
-                    if (object.get("ratio").getClass().getName().equals("java.lang.Double")){
-                        dRatio = (double) object.get("ratio");
-                        switch (cnt / 7) {
-                            case 0 -> data1.add(new ApiData(title, period, dRatio));
-                            case 1 -> data2.add(new ApiData(title, period, dRatio));
-                            case 2 -> data3.add(new ApiData(title, period, dRatio));
-                            case 3 -> data4.add(new ApiData(title, period, dRatio));
-                            case 4 -> data5.add(new ApiData(title, period, dRatio));
-                            default -> {
-                            }
-                        }
-                    }
-                    else{
-                        lRatio = (Long) object.get("ratio");
-                        double newRatio = (double) lRatio;
-                        switch (cnt / 7) {
-                            case 0 -> data1.add(new ApiData(title, period, newRatio));
-                            case 1 -> data2.add(new ApiData(title, period, newRatio));
-                            case 2 -> data3.add(new ApiData(title, period, newRatio));
-                            case 3 -> data4.add(new ApiData(title, period, newRatio));
-                            case 4 -> data5.add(new ApiData(title, period, newRatio));
-                            default -> {
-                            }
-                        }
-                    }
-                    cnt++;
-                }
-            }
-        }
-        catch (org.json.simple.parser.ParseException e) {
-            e.printStackTrace();
-        }
-
-
-        trendData6.add(data1);
-        trendData6.add(data2);
-        trendData6.add(data3);
-        trendData6.add(data4);
-        trendData6.add(data5);
-    }
-    private void Day7API(){
-        System.out.println("Day7");
-        String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
-                ",\"keywordGroups\":[{\"groupName\":\""+data.get(6).get(0)+"\"," + "\"keywords\":[\""+data.get(6).get(0)+"\"]}," +
-                "{\"groupName\":\""+data.get(6).get(1)+"\"," + "\"keywords\":[\""+data.get(6).get(1)+"\"]}," +
-                "{\"groupName\":\""+data.get(6).get(2)+"\"," + "\"keywords\":[\""+data.get(6).get(2)+"\"]}," +
-                "{\"groupName\":\""+data.get(6).get(3)+"\"," + "\"keywords\":[\""+data.get(6).get(3)+"\"]}," +
-                "{\"groupName\":\""+data.get(6).get(4)+"\"," + "\"keywords\":[\""+data.get(6).get(4)+"\"]}],"+
-                "\"timeUnit\":\"date\"}";
-
-        String responseBody = post(apiUrl, requestHeaders, requestBody);
-
-        ArrayList<ApiData> data1 = new ArrayList<>();
-        ArrayList<ApiData> data2 = new ArrayList<>();
-        ArrayList<ApiData> data3 = new ArrayList<>();
-        ArrayList<ApiData> data4 = new ArrayList<>();
-        ArrayList<ApiData> data5 = new ArrayList<>();
-
-        int cnt = 0;
-
-        try {
-            for(int i=0;i<5;i++) {
-                JSONParser jsonParse = new JSONParser(); //JSONParse에 json데이터를 넣어 파싱한 다음 JSONObject로 변환한다.
-                JSONObject jsonObj = (JSONObject) jsonParse.parse(responseBody); //JSONObject에서 PersonsArray를 get하여 JSONArray에 저장한다.
-                JSONArray personArray = (JSONArray) jsonObj.get("results"); //result를 먼저 파싱
-                JSONObject personObject = (JSONObject) personArray.get(i);
-
-                JSONArray tmpArr = (JSONArray) personObject.get("data");
-
-                for (Object o : tmpArr) {
-                    JSONObject object = (JSONObject) o;
-                    String title = (String) personObject.get("title");
-                    String period = (String) object.get("period");
-                    double dRatio;
-                    Long lRatio;
-
-                    if (object.get("ratio").getClass().getName().equals("java.lang.Double")){
-                        dRatio = (double) object.get("ratio");
-                        switch (cnt / 7) {
-                            case 0 -> data1.add(new ApiData(title, period, dRatio));
-                            case 1 -> data2.add(new ApiData(title, period, dRatio));
-                            case 2 -> data3.add(new ApiData(title, period, dRatio));
-                            case 3 -> data4.add(new ApiData(title, period, dRatio));
-                            case 4 -> data5.add(new ApiData(title, period, dRatio));
-                            default -> {
-                            }
-                        }
-                    }
-                    else{
-                        lRatio = (Long) object.get("ratio");
-                        double newRatio = (double) lRatio;
-                        switch (cnt / 7) {
-                            case 0 -> data1.add(new ApiData(title, period, newRatio));
-                            case 1 -> data2.add(new ApiData(title, period, newRatio));
-                            case 2 -> data3.add(new ApiData(title, period, newRatio));
-                            case 3 -> data4.add(new ApiData(title, period, newRatio));
-                            case 4 -> data5.add(new ApiData(title, period, newRatio));
-                            default -> {
-                            }
-                        }
-                    }
-                    cnt++;
-                }
-            }
-        }
-        catch (org.json.simple.parser.ParseException e) {
-            e.printStackTrace();
-        }
-
-        trendData7.add(data1);
-        trendData7.add(data2);
-        trendData7.add(data3);
-        trendData7.add(data4);
-        trendData7.add(data5);
     }
 
     private static String post(String apiUrl, Map<String, String> requestHeaders, String requestBody) {

@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.Arrays;
+import java.awt.Font;
+
 
 import javax.swing.*;
 
@@ -15,7 +17,6 @@ public class Membership {
     private JTextField textField_1;
     private JTextField textField_2;
     private JTextField textField_3;
-    private JTextField textField_4;
     private JTextField textField_5;
     private JRadioButton[] radio;
 
@@ -24,6 +25,7 @@ public class Membership {
     public static String InputNick;
     public static String InputSex;
     public static String InputAge;
+    private Font f1;
     /**
      * Launch the application.
      */
@@ -58,28 +60,37 @@ public class Membership {
         frame.getContentPane().setLayout(null);
         frame.setResizable(false);
 
-        JLabel lblNewLabel = new JLabel("\uC544\uC774\uB514");
+
+        f1 = new Font("이사만루체 Medium",Font.PLAIN, 12);
+
+        JLabel lblNewLabel = new JLabel("ID");
         lblNewLabel.setBounds(33, 80, 88, 22);
+        lblNewLabel.setFont(f1);
         frame.getContentPane().add(lblNewLabel);
 
-        JLabel lblNewLabel_1 = new JLabel("\uB2C9\uB124\uC784");
+        JLabel lblNewLabel_1 = new JLabel("NICKNAME");
         lblNewLabel_1.setBounds(33, 130, 88, 22);
+        lblNewLabel_1.setFont(f1);
         frame.getContentPane().add(lblNewLabel_1);
 
-        JLabel lblNewLabel_2 = new JLabel("\uBE44\uBC00\uBC88\uD638");
+        JLabel lblNewLabel_2 = new JLabel("PASSWORD");
         lblNewLabel_2.setBounds(33, 180, 88, 22);
+        lblNewLabel_2.setFont(f1);
         frame.getContentPane().add(lblNewLabel_2);
 
-        JLabel lblNewLabel_3 = new JLabel("\uBE44\uBC00\uBC88\uD638 \uD655\uC778");
+        JLabel lblNewLabel_3 = new JLabel("PW 확인");
         lblNewLabel_3.setBounds(33, 230, 88, 22);
+        lblNewLabel_3.setFont(f1);
         frame.getContentPane().add(lblNewLabel_3);
 
-        JLabel lblNewLabel_4 = new JLabel("\uC131\uBCC4");
+        JLabel lblNewLabel_4 = new JLabel("SEX");
         lblNewLabel_4.setBounds(33, 280, 88, 22);
+        lblNewLabel_4.setFont(f1);
         frame.getContentPane().add(lblNewLabel_4);
 
-        JLabel lblNewLabel_5 = new JLabel("\uB098\uC774");
+        JLabel lblNewLabel_5 = new JLabel("AGE");
         lblNewLabel_5.setBounds(33, 330, 88, 22);
+        lblNewLabel_5.setFont(f1);
         frame.getContentPane().add(lblNewLabel_5);
 
         textField = new JTextField();
@@ -111,6 +122,8 @@ public class Membership {
             //group.add(radio[i]);
             frame.getContentPane().add(radio[i]);
         }
+        radio[0].setFont(f1);
+        radio[1].setFont(f1);
 
         radio[0].setSelected(false);
         radio[1].setSelected(true);
@@ -122,9 +135,11 @@ public class Membership {
         textField_5 = new JTextField();
         textField_5.setColumns(10);
         textField_5.setBounds(128, 330, 70, 29);
+        textField_5.setHorizontalAlignment(JTextField.RIGHT);
         frame.getContentPane().add(textField_5);
 
         JLabel lblNewLabel_5_1_1 = new JLabel("\uC138");
+        lblNewLabel_5_1_1.setFont(f1);
         lblNewLabel_5_1_1.setBounds(203, 337, 88, 22);
         frame.getContentPane().add(lblNewLabel_5_1_1);
 

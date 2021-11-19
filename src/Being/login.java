@@ -10,13 +10,14 @@ import java.util.Date;
 import java.util.Scanner;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
+import java.awt.Font;
 
 public class login extends JFrame{
 
     private JFrame frame;
     private JTextField LOGIN_ID_INSERT;
     private JPasswordField LOGIN_PW_INSERT;
-
+    private Font f1;
     private ImageIcon icon;
     ImageIcon img = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\cancel.png");
     ImageIcon img2 = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\Minimize2.png");
@@ -60,6 +61,8 @@ public class login extends JFrame{
         frame.getContentPane().setLayout(null);
         frame.setResizable(false);
 
+        f1 = new Font("이사만루체 Medium",Font.PLAIN, 15);
+
         JPanel LOGINPAGE = new JPanel();
 
         LOGINPAGE.setBackground(new Color(247,241,255));
@@ -70,21 +73,21 @@ public class login extends JFrame{
 
         RoundedButton btnLOGIN = new RoundedButton("LOGIN");
         btnLOGIN.setForeground(Color.WHITE);
+        btnLOGIN.setFont(f1);
         btnLOGIN.setBackground(new Color(99,0,238));
-        btnLOGIN.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 
         btnLOGIN.setBounds(477, 231, 170, 30);
         LOGINPAGE.add(btnLOGIN);
 
         JLabel LOGIN_ID = new JLabel("ID");
         LOGIN_ID.setForeground(Color.BLACK);
-        LOGIN_ID.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+        LOGIN_ID.setFont(f1);
         LOGIN_ID.setBounds(475, 106, 70, 23);
         LOGINPAGE.add(LOGIN_ID);
 
         JLabel LOGIN_PW = new JLabel("PASSWORD");
         LOGIN_PW.setForeground(Color.BLACK);
-        LOGIN_PW.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+        LOGIN_PW.setFont(f1);
         LOGIN_PW.setBounds(475, 161, 100, 23);
         LOGINPAGE.add(LOGIN_PW);
 
@@ -92,6 +95,7 @@ public class login extends JFrame{
         LOGIN_ID_INSERT.setBounds(477, 131, 170, 25);
         LOGIN_ID_INSERT.setBorder(new MatteBorder(0, 0, 2, 0, (Color) new Color(0, 0, 0)));
         LOGIN_ID_INSERT.setOpaque(false);
+        LOGIN_ID_INSERT.setFont(f1);
         LOGINPAGE.add(LOGIN_ID_INSERT);
         LOGIN_ID_INSERT.setColumns(10);
 
@@ -103,11 +107,11 @@ public class login extends JFrame{
         LOGIN_PW_INSERT.setColumns(10);
 
         JButton btnLOGINtoMEMBERSHIP = new JButton("Sign Up");
-        btnLOGINtoMEMBERSHIP.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+        btnLOGINtoMEMBERSHIP.setFont(f1);
         btnLOGINtoMEMBERSHIP.setForeground(Color.BLACK);
         btnLOGINtoMEMBERSHIP.setBorderPainted(false);
         btnLOGINtoMEMBERSHIP.setContentAreaFilled(false);
-        btnLOGINtoMEMBERSHIP.setBounds(572, 271, 80, 25);
+        btnLOGINtoMEMBERSHIP.setBounds(550, 271, 120, 25);
         LOGINPAGE.add(btnLOGINtoMEMBERSHIP);
 
         JButton Minimize = new JButton(img2);
