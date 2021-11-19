@@ -28,11 +28,7 @@ public class cody extends JFrame implements DropTargetListener {
 
     File pilePath;
 
-    String base64;
-
     String imgEncode;
-
-
 
     Date today = new Date();
     /**
@@ -63,9 +59,14 @@ public class cody extends JFrame implements DropTargetListener {
 
         dropTarget = new DropTarget(picPanel, DnDConstants.ACTION_COPY_OR_MOVE, this, true, null);
         frame.add(picPanel, BorderLayout.CENTER);
-        picPanel.setSize(500, 500);
-        picPanel.setBounds(250, 26, 300, 300);
+        picPanel.setSize(512, 512);
+        picPanel.setBounds(333, 50, 512, 512);
         picPanel.setBackground(Color.gray);
+
+        picLabel = new JLabel("사진을 드래그 해주세요");
+
+        picPanel.setLayout(new BorderLayout());
+        picPanel.add(picLabel, BorderLayout.CENTER);
 
     }
 
@@ -74,7 +75,7 @@ public class cody extends JFrame implements DropTargetListener {
      */
     private void initialize() {
         frame = new JFrame();
-        frame.setBounds(100, 100, 800, 520);
+        frame.setBounds(100, 100, 1200, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.getContentPane().setLayout(null);
@@ -83,21 +84,21 @@ public class cody extends JFrame implements DropTargetListener {
         InitDragAndDrop();//drag and drop 되게 설정
 
         JPanel CODYLINE = new JPanel();  // 코디 한줄평 업로드 ui 설정
-        CODYLINE.setBounds(0, 0, 800, 500);
+        CODYLINE.setBounds(0, 0, 1200, 800);
         frame.getContentPane().add(CODYLINE);
         CODYLINE.setLayout(null);
 
         JButton btnWriting = new JButton("\uAE00 \uC791\uC131\uD558\uAE30");
-        btnWriting.setBounds(377, 408, 160, 36);
+        btnWriting.setBounds(800, 600, 160, 36);
         CODYLINE.add(btnWriting);
 
         JLabel lblcodyline = new JLabel("\uCF54\uB514 \uD55C\uC904 \uD3C9");
         lblcodyline.setFont(new Font("굴림", Font.PLAIN, 18));
-        lblcodyline.setBounds(42, 349, 163, 49);
+        lblcodyline.setBounds(42, 600, 163, 49);
         CODYLINE.add(lblcodyline);
 
         txtwriting = new JTextField();
-        txtwriting.setBounds(239, 349, 480, 49);
+        txtwriting.setBounds(239, 600, 480, 49);
         CODYLINE.add(txtwriting);
         txtwriting.setColumns(10);
 
@@ -105,21 +106,19 @@ public class cody extends JFrame implements DropTargetListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    JOptionPane.showMessageDialog(null, "업로드 완료");
                     DBHandle(txtwriting.getText());
+                    System.out.println("post");
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-                System.out.println("post");
             }
         });
 
-
-
         JButton btnCODYTOMAIN = new JButton("\uB3CC\uC544\uAC00\uAE30");
 
-        btnCODYTOMAIN.setBounds(560, 408, 160, 36);
+        btnCODYTOMAIN.setBounds(1000, 600, 160, 36);
         CODYLINE.add(btnCODYTOMAIN);
-
 
         btnCODYTOMAIN.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -145,9 +144,10 @@ public class cody extends JFrame implements DropTargetListener {
         }
 
 
-        SimpleDateFormat timeformat = new SimpleDateFormat("yy.MM.dd");
+        SimpleDateFormat timeformat = new SimpleDateFormat("yy.MM.dd-hh.mm.ss");
         Date time = new Date();
         String postTime = timeformat.format(time);
+        System.out.println(postTime);
 
         int like = 0;
 
@@ -197,23 +197,22 @@ public class cody extends JFrame implements DropTargetListener {
                 e.printStackTrace();
             }
 
-            Statement statement = con.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM example.post");
-
-
-            while(resultSet.next()){
-                String id = resultSet.getString("name");
-                String text = resultSet.getString("text");
-                String pic = resultSet.getString("picture");
-                String date = resultSet.getString("date");
-                int Like = resultSet.getInt("like");
-                System.out.println(id+", "+text+", "+pic+", "+date+", "+Like);
-                decodeImg = pic;
-            }
-
-            resultSet.close();
-            statement.close();
-            con.close();
+//            Statement statement = con.createStatement();
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM example.post");
+//
+//
+//            while(resultSet.next()){
+//                String id = resultSet.getString("name");
+//                String text = resultSet.getString("text");
+//                String pic = resultSet.getString("picture");
+//                String date = resultSet.getString("date");
+//                int Like = resultSet.getInt("like");
+//                decodeImg = pic;
+//            }
+//
+//            resultSet.close();
+//            statement.close();
+//            con.close();
         } catch(SQLException e) {
             System.err.println("con 오류:" + e.getMessage());
             e.printStackTrace();
@@ -226,21 +225,10 @@ public class cody extends JFrame implements DropTargetListener {
         } catch (SQLException ignored) {
 
         }
-
-        DecodeImgFile(decodeImg);
-
     }
 
     public void setVisible(boolean b){
         frame.setVisible(b);
-    }
-
-    private void DecodeImgFile(String decodeStr) throws IOException {
-        byte[] binary = Base64.getDecoder().decode(decodeStr);//인코딩한거 다시 디코딩 -> bianry를 이미지로
-
-        try (OutputStream stream = new FileOutputStream("C:\\Users\\ancx1\\바탕 화면\\opensource_img\\img3.jpg")) {
-            stream.write(binary);
-        }
     }
 
     private void EncodeImgFile() throws IOException {
@@ -261,13 +249,11 @@ public class cody extends JFrame implements DropTargetListener {
     @Override
     public void drop(DropTargetDropEvent dtde) {
         System.out.println("drop");
-        if ((dtde.getDropAction() & DnDConstants.ACTION_COPY_OR_MOVE) != 0)
-        {
+        if ((dtde.getDropAction() & DnDConstants.ACTION_COPY_OR_MOVE) != 0) {
             dtde.acceptDrop(dtde.getDropAction());
             Transferable tr = dtde.getTransferable();
 
-            try
-            {
+            try {
                 //파일명 얻어오기
                 List list = (List) tr.getTransferData(DataFlavor.javaFileListFlavor);
 
@@ -277,8 +263,6 @@ public class cody extends JFrame implements DropTargetListener {
 
                 pilePath = (File) list.get(0);
 
-                picLabel = new JLabel();
-                picPanel.add(picLabel);
                 picLabel.setIcon(new ImageIcon(image));//picLabel에 드래그한 사진 띄움
                 frame.add(picPanel);
 
