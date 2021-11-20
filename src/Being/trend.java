@@ -43,12 +43,8 @@ public class trend extends JFrame{
     String clientSecret = "3AqiuZaCqw";
 
     String apiUrl = "https://openapi.naver.com/v1/datalab/shopping/category/keywords";
-
     Map<String, String> requestHeaders = new HashMap<>();
-
     String today, beforeWeek;
-
-
     //trendData는 상위5개 항목을 7일치 title, period, ratio저장
 
     /**
@@ -72,9 +68,7 @@ public class trend extends JFrame{
     public trend() throws IOException {
         initialize();
     }
-    /**
-     * Initialize the contents of the frame.
-     */
+
     private void initialize() throws IOException {
         frame = new JFrame();
         frame.setBounds(100, 100, 800, 520);
