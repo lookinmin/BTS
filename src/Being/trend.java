@@ -1,6 +1,28 @@
 package Being;
 
-import org.json.simple.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Frame;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.Font;
+import javax.swing.border.MatteBorder;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
+import javax.swing.JLabel;
+import java.awt.Canvas;
+import javax.swing.SwingConstants;
+import javax.swing.JLayeredPane;
+import java.awt.CardLayout;
+import javax.swing.Icon;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.jsoup.Jsoup;
@@ -8,44 +30,60 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import javax.swing.*;
 
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.*;
-import java.awt.EventQueue;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-
-public class trend extends JFrame{
-
+public class trend extends JPanel{
     private JFrame frame;
+    private ImageIcon icon;
+    ImageIcon img = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\cancel.png");
+    ImageIcon img2 = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\minimize2.png");
+    ImageIcon img4 = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\ranking.png");
+    ImageIcon one = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\number1.png");
+    ImageIcon two = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\number2.png");
+    ImageIcon three = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\number3.png");
+    ImageIcon four = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\number4.png");
+    ImageIcon five = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\number5.png");
+    ImageIcon musinsa = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\musinsa1.png");
+    ImageIcon naver = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\naver2.png");
+    ImageIcon Next = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\next.png");
+    ImageIcon Prev = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\prev.png");
+    ImageIcon cody = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\cody1.png");
+    ImageIcon trend = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\trend1.png");
+    ImageIcon home = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\home1.png");
+    ImageIcon MainLogo = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\MainLogo.png");
+    int i=0;
+    private CardLayout cards = new CardLayout();
+    private Font f1;
 
-    ArrayList<String> musinsa = new ArrayList<>();          //무신사에서 받은 상위 5개 종목 데이터가 들어올 배열
+
+
+    String today, beforeWeek;
+
+    ArrayList<String> musinsaArr = new ArrayList<>();          //무신사에서 받은 상위 5개 종목 데이터가 들어올 배열
 
     ArrayList<Integer> Item1 = new ArrayList<>();
     ArrayList<Integer> Item2 = new ArrayList<>();
     ArrayList<Integer> Item3 = new ArrayList<>();
     ArrayList<Integer> Item4 = new ArrayList<>();
     ArrayList<Integer> Item5 = new ArrayList<>();
-
     String clientId = "pkeFje1lOTUYccJW4XNe";
     String clientSecret = "3AqiuZaCqw";
+    Map<String, String> requestHeaders = new HashMap<>();
 
     String apiUrl = "https://openapi.naver.com/v1/datalab/shopping/category/keywords";
-    Map<String, String> requestHeaders = new HashMap<>();
-    String today, beforeWeek;
-    //trendData는 상위5개 항목을 7일치 title, period, ratio저장
+    Draw mainPanel1 ;
+    Draw mainPanel2 ;
+    Draw mainPanel3 ;
+    Draw mainPanel4 ;
+    Draw mainPanel5 ;
 
     /**
      * Launch the application.
@@ -62,40 +100,41 @@ public class trend extends JFrame{
             }
         });
     }
+
     /**
      * Create the application.
      */
-    public trend() throws IOException {
-        initialize();
-    }
+    public trend() {
+        List<Integer> score1 = new ArrayList<Integer>();
+        List<Integer> score2 = new ArrayList<Integer>();
+        List<Integer> score3 = new ArrayList<Integer>();
+        List<Integer> score4 = new ArrayList<Integer>();
+        List<Integer> score5 = new ArrayList<Integer>();
 
-    private void initialize() throws IOException {
-        frame = new JFrame();
-        frame.setBounds(100, 100, 800, 520);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.getContentPane().setLayout(null);
-        frame.setResizable(false);
-
-        JPanel TREND = new JPanel();    // 트랜드보기 ui 설정
-        TREND.setBounds(0, 0, 800, 500);
-        frame.getContentPane().add(TREND);
-        TREND.setLayout(null);
-        JButton btnTRENDTOMAIN = new JButton("\uBA54\uC778\uBA54\uB274\uB85C\uB3CC\uC544\uAC00\uAE30");
-        btnTRENDTOMAIN.setBounds(598, 417, 175, 23);
-        TREND.add(btnTRENDTOMAIN);
-
-        Crawling();
+        try {
+            Crawling();
+        } catch (IOException ignored) {
+        }
         API();
+        Item1API();
+        Item2API();
+        Item3API();
+        Item4API();
+        Item5API();
+        score1.addAll(Item1);
+        score2.addAll(Item2);
+        score3.addAll(Item3);
+        score4.addAll(Item4);
+        score5.addAll(Item5);
 
-        btnTRENDTOMAIN.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                menu r = new menu();
-                r.setVisible(true);
-                frame.dispose();
-            }
-        });
 
+        mainPanel1 = new Draw(score1);
+        mainPanel2 = new Draw(score2);
+        mainPanel3 = new Draw(score3);
+        mainPanel4 = new Draw(score4);
+        mainPanel5 = new Draw(score5);
+
+        initialize();
     }
 
     private void Crawling() throws IOException {
@@ -106,14 +145,12 @@ public class trend extends JFrame{
         Elements elements= document.select("ol[class=\" sranking_list\"]");
         int i = 0;
         for(Element element:elements.select("p[class=\" p_srank\"]")){
-            musinsa.add(StrSplit(element));
+            musinsaArr.add(StrSplit(element));
             i++;
             if(i == 5){
                 break;
             }
-
         }
-        System.out.println(musinsa);
     }
 
     private static String StrSplit(Element element) {
@@ -139,26 +176,13 @@ public class trend extends JFrame{
         System.out.println(beforeWeek);
 
         //endDate는 입력 날짜 하루 전까지 보여줌 -> beforeWeek를 오늘 -8일 하면 7일치 저장
-
-        Item1API();
-        Item2API();
-        Item3API();
-        Item4API();
-        Item5API();
-
-//        for(int i=0;i<trendData1.size();i++){
-//            for(int j=0;j<trendData1.get(i).size();j++){
-//                System.out.println(trendData1.get(i).get(j).getTitle());
-//            }
-//            System.out.println("---");
-//        }
     }
 
     private void Item1API(){
         System.out.println("Item1");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
-                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsa.get(0)+"\"]}]}";
-
+                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsaArr.get(0)+"\"]}]}";
+        new Draw(Color.green, Color.black);
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
         try{
@@ -186,7 +210,7 @@ public class trend extends JFrame{
 
                 int tmp = (int)dRatio;
                 Item1.add(tmp);
-                System.out.println(tmp);
+                System.out.println("tmp : "+tmp);
             }
         }catch (org.json.simple.parser.ParseException e){
             e.printStackTrace();
@@ -196,8 +220,8 @@ public class trend extends JFrame{
     private void Item2API(){
         System.out.println("Item2");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
-                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsa.get(1)+"\"]}]}";
-
+                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsaArr.get(1)+"\"]}]}";
+        new Draw(Color.BLUE, Color.black);
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
         try{
@@ -225,19 +249,18 @@ public class trend extends JFrame{
 
                 int tmp = (int)dRatio;
                 Item2.add(tmp);
-                System.out.println(tmp);
+                System.out.println("tmp : "+tmp);
             }
         }catch (org.json.simple.parser.ParseException e){
             e.printStackTrace();
         }
-
     }
 
     private void Item3API(){
         System.out.println("Item3");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
-                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsa.get(2)+"\"]}]}";
-
+                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsaArr.get(2)+"\"]}]}";
+        new Draw(Color.YELLOW, Color.black);
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
         try{
@@ -265,7 +288,7 @@ public class trend extends JFrame{
 
                 int tmp = (int)dRatio;
                 Item3.add(tmp);
-                System.out.println(tmp);
+                System.out.println("tmp : "+tmp);
             }
         }catch (org.json.simple.parser.ParseException e){
             e.printStackTrace();
@@ -275,8 +298,8 @@ public class trend extends JFrame{
     private void Item4API(){
         System.out.println("Item4");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
-                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsa.get(3)+"\"]}]}";
-
+                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsaArr.get(3)+"\"]}]}";
+        new Draw(Color.pink, Color.black);
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
         try{
@@ -304,7 +327,7 @@ public class trend extends JFrame{
 
                 int tmp = (int)dRatio;
                 Item4.add(tmp);
-                System.out.println(tmp);
+                System.out.println("tmp : "+tmp);
             }
         }catch (org.json.simple.parser.ParseException e){
             e.printStackTrace();
@@ -314,11 +337,9 @@ public class trend extends JFrame{
     private void Item5API(){
         System.out.println("Item5");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
-                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsa.get(4)+"\"]}]}";
-
+                ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsaArr.get(4)+"\"]}]}";
+        new Draw(Color.orange, Color.black);
         String responseBody = post(apiUrl, requestHeaders, requestBody);
-
-        System.out.println(responseBody);
 
         try{
             JSONParser jsonParser = new JSONParser();
@@ -345,7 +366,7 @@ public class trend extends JFrame{
 
                 int tmp = (int)dRatio;
                 Item5.add(tmp);
-                System.out.println(tmp);
+                System.out.println("tmp : "+tmp);
             }
         }catch (org.json.simple.parser.ParseException e){
             e.printStackTrace();
@@ -407,6 +428,273 @@ public class trend extends JFrame{
             throw new RuntimeException("API 응답을 읽는데 실패했습니다.", e);
         }
     }
+    /**
+     * Initialize the contents of the frame.
+     */
+
+    private void initialize() {
+        f1 = new Font("이사만루체 Medium",Font.PLAIN,14);
+        frame = new JFrame();
+        frame.setBounds(100, 100, 1200, 750);
+        frame.setUndecorated(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.getContentPane().setLayout(null);
+        frame.setResizable(false);
+
+
+        JPanel TREND = new JPanel();    // 트랜드보기 ui 설정
+        TREND.setBackground(new Color(247,241,255));
+        TREND.setBounds(0, 0, 1200, 750);
+        frame.getContentPane().add(TREND);
+        TREND.setLayout(null);
+
+        JButton GO_Trend = new JButton(trend);
+        GO_Trend.setBounds(605, 10, 50, 50);
+        TREND.add(GO_Trend);
+        GO_Trend.setBorderPainted(false);
+        GO_Trend.setFocusPainted(false);
+        GO_Trend.setContentAreaFilled(false);
+
+        JButton Go_Cody = new JButton(cody);
+        Go_Cody.setBounds(543, 10, 50, 50);
+        TREND.add(Go_Cody);
+        Go_Cody.setBorderPainted(false);
+        Go_Cody.setFocusPainted(false);
+        Go_Cody.setContentAreaFilled(false);
+
+        JLabel Logo = new JLabel(MainLogo);
+        Logo.setBounds(12, 0, 269, 67);
+        TREND.add(Logo);
+
+
+        JButton Home = new JButton(home);
+
+        Home.setFocusPainted(false);
+        Home.setContentAreaFilled(false);
+        Home.setBorderPainted(false);
+        Home.setBounds(481, 10, 50, 50);
+        TREND.add(Home);
+
+
+
+        JButton Minimize = new JButton(img2);
+        Minimize.setBounds(1112, 10, 32, 32);
+        Minimize.setBorderPainted(false);
+        Minimize.setFocusPainted(false);
+        Minimize.setContentAreaFilled(false);
+        TREND.add(Minimize);
+
+        JButton exit = new JButton(img);
+        exit.setBounds(1156, 10, 32, 32);
+        exit.setBorderPainted(false);
+        exit.setFocusPainted(false);
+        exit.setContentAreaFilled(false);
+        TREND.add(exit);
+
+        // 랭킹 패널
+        JPanel RankingPanel = new JPanel();
+        RankingPanel.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(154, 94, 253)));
+        RankingPanel.setBounds(30, 192, 240, 244);
+        RankingPanel.setBackground(new Color(244, 238, 255));
+        TREND.add(RankingPanel);
+        RankingPanel.setLayout(null);
+
+
+        JLabel rank1 = new JLabel("");
+        rank1.setBounds(53, 10, 175, 32);
+        rank1.setText(musinsaArr.get(0));
+        rank1.setFont(f1);
+        RankingPanel.add(rank1);
+
+        JLabel rank2 = new JLabel("");
+        rank2.setBounds(53, 57, 175, 32);
+        rank2.setText(musinsaArr.get(1));
+        rank2.setFont(f1);
+        RankingPanel.add(rank2);
+
+        JLabel rank3 = new JLabel("");
+        rank3.setBounds(53, 104, 175, 32);
+        rank3.setText(musinsaArr.get(2));
+        rank3.setFont(f1);
+        RankingPanel.add(rank3);
+
+        JLabel rank4 = new JLabel("");
+        rank4.setBounds(53, 151, 175, 32);
+        rank4.setText(musinsaArr.get(3));
+        rank4.setFont(f1);
+        RankingPanel.add(rank4);
+
+        JLabel rank5 = new JLabel("");
+        rank5.setBounds(53, 198, 175, 32);
+        rank5.setText(musinsaArr.get(4));
+        rank5.setFont(f1);
+        RankingPanel.add(rank5);
+
+
+        JLabel Rankimg = new JLabel(img4); //랭킹 이미지
+        Rankimg.setBounds(95, 96, 110, 80);
+        TREND.add(Rankimg);
+
+        JLabel Musinsa = new JLabel(musinsa);
+        Musinsa.setBounds(40, 446, 210, 32);
+        TREND.add(Musinsa);
+
+        JLabel Naver = new JLabel(naver);
+        Naver.setBounds(834, 645, 210, 40);
+        TREND.add(Naver);
+
+
+
+
+
+
+        JLabel lblNewLabel_5 = new JLabel(one);
+        lblNewLabel_5.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblNewLabel_5.setBounds(12, 10, 32, 32);
+        RankingPanel.add(lblNewLabel_5);
+
+        JLabel lblNewLabel_5_1 = new JLabel(two);
+        lblNewLabel_5_1.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblNewLabel_5_1.setBounds(12, 57, 32, 32);
+        RankingPanel.add(lblNewLabel_5_1);
+
+        JLabel lblNewLabel_5_2 = new JLabel(three);
+        lblNewLabel_5_2.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblNewLabel_5_2.setBounds(12, 104, 32, 32);
+        RankingPanel.add(lblNewLabel_5_2);
+
+        JLabel lblNewLabel_5_3 = new JLabel(four);
+        lblNewLabel_5_3.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblNewLabel_5_3.setBounds(12, 151, 32, 32);
+        RankingPanel.add(lblNewLabel_5_3);
+
+        JLabel lblNewLabel_5_4 = new JLabel(five);
+        lblNewLabel_5_4.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblNewLabel_5_4.setBounds(12, 198, 32, 32);
+        RankingPanel.add(lblNewLabel_5_4);
+
+
+        //그래프
+
+        JPanel GraphPanel1 = new JPanel();
+        GraphPanel1.setBounds(345, 96, 699, 539);
+        TREND.add(GraphPanel1);
+        GraphPanel1.setLayout(cards);
+
+        JPanel page1 = new JPanel();
+        GraphPanel1.add(mainPanel1, "1");
+
+        JLabel lblNewLabel = new JLabel("New label");
+        page1.add(lblNewLabel);
+
+        JPanel page2 = new JPanel();
+        GraphPanel1.add(mainPanel2, "2");
+
+        JLabel lblNewLabel_1 = new JLabel("12323");
+        page2.add(lblNewLabel_1);
+
+        JPanel page3 = new JPanel();
+        GraphPanel1.add(mainPanel3, "3");
+
+        JLabel lblNewLabel_2 = new JLabel("2222");
+        page3.add(lblNewLabel_2);
+
+        JPanel page4 = new JPanel();
+        GraphPanel1.add(mainPanel4, "4");
+
+        JLabel lblNewLabel_3 = new JLabel("333333");
+        page4.add(lblNewLabel_3);
+
+        JPanel page5 = new JPanel();
+        GraphPanel1.add(mainPanel5, "5");
+
+
+
+
+        JButton next = new JButton(Next);
+        next.setBounds(1045, 96, 60, 539);
+        next.setBorderPainted(false);
+        next.setContentAreaFilled(false);
+        TREND.add(next);
+
+
+
+        JButton prev = new JButton(Prev);
+        prev.setBounds(283, 96, 60, 539);
+        prev.setBorderPainted(false);
+        prev.setContentAreaFilled(false);
+        TREND.add(prev);
+
+
+
+        prev.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(i>0) {
+                    cards.previous(GraphPanel1);
+                    i--;
+                }
+            }
+        });
+
+        next.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(i<4) {
+                    cards.next(GraphPanel1);
+                    i++;
+                }
+            }
+        });
+
+        exit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+
+        Minimize.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.setState(Frame.ICONIFIED);
+            }
+        });
+
+        Home.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Object obj = e.getSource();
+                if(obj == Home) {
+                    menu r = new menu();
+                    r.setVisible(true);
+                    frame.dispose();
+                }
+
+            }
+        });
+
+        GO_Trend.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Object obj = e.getSource();
+                if(obj == GO_Trend) {
+                    trend r = new trend();
+                    r.setVisible(true);
+                    frame.dispose();
+                }
+            }
+        });
+
+        Go_Cody.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Object obj = e.getSource();
+                if(obj == Go_Cody) {
+                    cody r = new cody();
+                    r.setVisible(true);
+                    frame.dispose();
+                }
+
+            }
+        });
+
+    }
+
 
     public void setVisible(boolean b){
         frame.setVisible(b);

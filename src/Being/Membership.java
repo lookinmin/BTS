@@ -5,27 +5,38 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.Arrays;
+
+import java.awt.Color;
 import java.awt.Font;
-
-
+import javax.swing.border.MatteBorder;
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.LineBorder;
 
-public class Membership {
+public class Membership extends JFrame{
 
     private JFrame frame;
     private JTextField textField;
     private JTextField textField_1;
     private JTextField textField_2;
     private JTextField textField_3;
+    private JTextField textField_4;
     private JTextField textField_5;
     private JRadioButton[] radio;
+    private Font f1;
 
     public static String InputID;
     public static String InputPW;
     public static String InputNick;
     public static String InputSex;
     public static String InputAge;
-    private Font f1;
+
+    ImageIcon img = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\trend.png");
+    ImageIcon img2 = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\mem_cancel.png");
+    ImageIcon img3 = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\mem_clear1.png");
+
+
+
     /**
      * Launch the application.
      */
@@ -54,69 +65,82 @@ public class Membership {
      */
     private void initialize() {
         frame = new JFrame();
-        frame.setBounds(100, 100, 400, 600);
+        frame.getContentPane().setBackground(new Color(247,241,255));
+        frame.setUndecorated(true);
+        frame.setBounds(100, 100, 450, 700);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.getContentPane().setLayout(null);
         frame.setResizable(false);
 
-
-        f1 = new Font("이사만루체 Medium",Font.PLAIN, 12);
+        f1 = new Font("이사만루체 Medium",Font.PLAIN,14);
 
         JLabel lblNewLabel = new JLabel("ID");
-        lblNewLabel.setBounds(33, 80, 88, 22);
         lblNewLabel.setFont(f1);
+        lblNewLabel.setBounds(63, 200, 88, 30);
         frame.getContentPane().add(lblNewLabel);
 
-        JLabel lblNewLabel_1 = new JLabel("NICKNAME");
-        lblNewLabel_1.setBounds(33, 130, 88, 22);
+        JLabel lblNewLabel_1 = new JLabel("NickName");
         lblNewLabel_1.setFont(f1);
+        lblNewLabel_1.setBounds(63, 260, 88, 30);
         frame.getContentPane().add(lblNewLabel_1);
 
-        JLabel lblNewLabel_2 = new JLabel("PASSWORD");
-        lblNewLabel_2.setBounds(33, 180, 88, 22);
+        JLabel lblNewLabel_2 = new JLabel("PW");
         lblNewLabel_2.setFont(f1);
+        lblNewLabel_2.setBounds(63, 320, 88, 30);
         frame.getContentPane().add(lblNewLabel_2);
 
-        JLabel lblNewLabel_3 = new JLabel("PW 확인");
-        lblNewLabel_3.setBounds(33, 230, 88, 22);
+        JLabel lblNewLabel_3 = new JLabel("PW Check");
         lblNewLabel_3.setFont(f1);
+        lblNewLabel_3.setBounds(63, 380, 88, 30);
         frame.getContentPane().add(lblNewLabel_3);
 
-        JLabel lblNewLabel_4 = new JLabel("SEX");
-        lblNewLabel_4.setBounds(33, 280, 88, 22);
+        JLabel lblNewLabel_4 = new JLabel("Sex");
         lblNewLabel_4.setFont(f1);
+        lblNewLabel_4.setBounds(63, 440, 88, 30);
         frame.getContentPane().add(lblNewLabel_4);
 
-        JLabel lblNewLabel_5 = new JLabel("AGE");
-        lblNewLabel_5.setBounds(33, 330, 88, 22);
+        JLabel lblNewLabel_5 = new JLabel("Age");
         lblNewLabel_5.setFont(f1);
+        lblNewLabel_5.setBounds(63, 500, 88, 30);
         frame.getContentPane().add(lblNewLabel_5);
+
+
 
         textField = new JTextField();
         textField.setColumns(10);
-        textField.setBounds(128, 77, 220, 29);
+        textField.setFont(f1);
+        textField.setOpaque(false);
+        textField.setBorder(new MatteBorder(0, 0, 2, 0, (Color) new Color(0, 0, 0)));
+        textField.setBounds(158, 200, 220, 29);
         frame.getContentPane().add(textField);
 
         textField_1 = new JTextField();
+        textField_1.setFont(f1);
         textField_1.setColumns(10);
-        textField_1.setBounds(128, 127, 220, 29);
+        textField_1.setOpaque(false);
+        textField_1.setBorder(new MatteBorder(0, 0, 2, 0, (Color) new Color(0, 0, 0)));
+        textField_1.setBounds(158, 260, 220, 29);
         frame.getContentPane().add(textField_1);
 
         textField_2 = new JPasswordField();
         textField_2.setColumns(10);
-        textField_2.setBounds(128, 177, 220, 29);
+        textField_2.setOpaque(false);
+        textField_2.setBorder(new MatteBorder(0, 0, 2, 0, (Color) new Color(0, 0, 0)));
+        textField_2.setBounds(158, 320, 220, 29);
         frame.getContentPane().add(textField_2);
 
         textField_3 = new JPasswordField();
         textField_3.setColumns(10);
-        textField_3.setBounds(128, 227, 220, 29);
+        textField_3.setOpaque(false);
+        textField_3.setBorder(new MatteBorder(0, 0, 2, 0, (Color) new Color(0, 0, 0)));
+        textField_3.setBounds(158, 380, 220, 29);
         frame.getContentPane().add(textField_3);
 
 
         radio = new JRadioButton[2];
         String[] radio_name = {"남성", "여성"};
-       // ButtonGroup group = new ButtonGroup();
+        // ButtonGroup group = new ButtonGroup();
         for(int i=0; i<radio.length; i++){
             radio[i] = new JRadioButton(radio_name[i]);
             //group.add(radio[i]);
@@ -125,31 +149,52 @@ public class Membership {
         radio[0].setFont(f1);
         radio[1].setFont(f1);
 
+        radio[0].setBounds(158, 440, 70, 25);
+        radio[1].setBounds(232, 440, 70, 25);
+
+        radio[0].setBorderPainted(false);
+        radio[0].setFocusPainted(false);
+        radio[0].setContentAreaFilled(false);
+
+        radio[1].setBorderPainted(false);
+        radio[1].setFocusPainted(false);
+        radio[1].setContentAreaFilled(false);
+
         radio[0].setSelected(false);
         radio[1].setSelected(true);
-        radio[0].setBounds(129, 280, 70, 25);
-        radio[1].setBounds(203, 280, 70, 25);
-
 
 
         textField_5 = new JTextField();
+        textField_5.setFont(f1);
+        textField_5.setHorizontalAlignment(JTextField.TRAILING);
         textField_5.setColumns(10);
-        textField_5.setBounds(128, 330, 70, 29);
-        textField_5.setHorizontalAlignment(JTextField.RIGHT);
+        textField_5.setOpaque(false);
+        textField_5.setBorder(new MatteBorder(0, 0, 2, 0, (Color) new Color(0, 0, 0)));
+        textField_5.setBounds(158, 503, 50, 30);
         frame.getContentPane().add(textField_5);
 
-        JLabel lblNewLabel_5_1_1 = new JLabel("\uC138");
+        JLabel lblNewLabel_5_1_1 = new JLabel("years");
         lblNewLabel_5_1_1.setFont(f1);
-        lblNewLabel_5_1_1.setBounds(203, 337, 88, 22);
+        lblNewLabel_5_1_1.setBounds(213, 500, 88, 30);
         frame.getContentPane().add(lblNewLabel_5_1_1);
 
-        JButton Finish = new JButton("\uC644\uB8CC");
-        Finish.setBounds(24, 517, 97, 23);
+        JButton Finish = new JButton(img3);
+        Finish.setBounds(63, 606, 64, 64);
+        Finish.setBorderPainted(false);
+        Finish.setFocusPainted(false);
+        Finish.setContentAreaFilled(false);
         frame.getContentPane().add(Finish);
 
-        JButton eXIT = new JButton("\uB3CC\uC544\uAC00\uAE30");
-        eXIT.setBounds(251, 517, 97, 23);
+        JButton eXIT = new JButton(img2);
+        eXIT.setBounds(314, 606, 64, 64);
+        eXIT.setBorderPainted(false);
+        eXIT.setFocusPainted(false);
+        eXIT.setContentAreaFilled(false);
         frame.getContentPane().add(eXIT);
+
+        JLabel Logo = new JLabel(img);
+        Logo.setBounds(37, 43, 376, 82);
+        frame.getContentPane().add(Logo);
 
         eXIT.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

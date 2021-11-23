@@ -34,5 +34,29 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Desktop/imgscalr-lib-4.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$USER_HOME$/Desktop/jgoodies-forms-1.8.0" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="file://$USER_HOME$/Desktop/jgoodies-forms-1.8.0/docs/api" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="file://$USER_HOME$/Desktop/jgoodies-forms-1.8.0" />
+        </SOURCES>
+        <jarDirectory url="file://$USER_HOME$/Desktop/jgoodies-forms-1.8.0" recursive="false" />
+        <jarDirectory url="file://$USER_HOME$/Desktop/jgoodies-forms-1.8.0" recursive="false" type="SOURCES" />
+      </library>
+    </orderEntry>
   </component>
 </module>
