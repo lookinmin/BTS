@@ -2,6 +2,8 @@ package Being;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.time.Year;
 import java.util.Date;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -37,6 +39,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import javax.swing.*;
 
 
@@ -63,8 +67,6 @@ public class trend extends JPanel{
     private CardLayout cards = new CardLayout();
     private Font f1;
 
-
-
     String today, beforeWeek;
 
     ArrayList<String> musinsaArr = new ArrayList<>();          //무신사에서 받은 상위 5개 종목 데이터가 들어올 배열
@@ -74,6 +76,7 @@ public class trend extends JPanel{
     ArrayList<Integer> Item3 = new ArrayList<>();
     ArrayList<Integer> Item4 = new ArrayList<>();
     ArrayList<Integer> Item5 = new ArrayList<>();
+    Color G_c[] = {Color.CYAN, Color.BLUE, Color.ORANGE, Color.RED, Color.GREEN};
     String clientId = "pkeFje1lOTUYccJW4XNe";
     String clientSecret = "3AqiuZaCqw";
     Map<String, String> requestHeaders = new HashMap<>();
@@ -173,7 +176,6 @@ public class trend extends JPanel{
         Calendar week = Calendar.getInstance();
         week.add(Calendar.DATE , -7);
         beforeWeek = new java.text.SimpleDateFormat("yyyy-MM-dd").format(week.getTime()); //일주일 전
-        System.out.println(beforeWeek);
 
         //endDate는 입력 날짜 하루 전까지 보여줌 -> beforeWeek를 오늘 -8일 하면 7일치 저장
     }
@@ -182,7 +184,6 @@ public class trend extends JPanel{
         System.out.println("Item1");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
                 ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsaArr.get(0)+"\"]}]}";
-        new Draw(Color.green, Color.black);
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
         try{
@@ -221,7 +222,6 @@ public class trend extends JPanel{
         System.out.println("Item2");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
                 ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsaArr.get(1)+"\"]}]}";
-        new Draw(Color.BLUE, Color.black);
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
         try{
@@ -260,7 +260,6 @@ public class trend extends JPanel{
         System.out.println("Item3");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
                 ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsaArr.get(2)+"\"]}]}";
-        new Draw(Color.YELLOW, Color.black);
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
         try{
@@ -299,7 +298,6 @@ public class trend extends JPanel{
         System.out.println("Item4");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
                 ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsaArr.get(3)+"\"]}]}";
-        new Draw(Color.pink, Color.black);
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
         try{
@@ -338,7 +336,6 @@ public class trend extends JPanel{
         System.out.println("Item5");
         String requestBody = "{\"startDate\":\""+beforeWeek+"\"," + "\"endDate\":\""+today+"\""+
                 ",\"timeUnit\":\"date\","+ "\"category\": \"50000000\","+ "\"keyword\": [{\"name\": \"패션의류\", \"param\": [\""+musinsaArr.get(4)+"\"]}]}";
-        new Draw(Color.orange, Color.black);
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
         try{
@@ -441,7 +438,19 @@ public class trend extends JPanel{
         frame.setLocationRelativeTo(null);
         frame.getContentPane().setLayout(null);
         frame.setResizable(false);
+        mainPanel1.setBackground(new Color(247,241,255));
+        mainPanel2.setBackground(new Color(247,241,255));
+        mainPanel3.setBackground(new Color(247,241,255));
+        mainPanel4.setBackground(new Color(247,241,255));
+        mainPanel5.setBackground(new Color(247,241,255));
 
+        Date Today = new Date();
+        SimpleDateFormat date = new SimpleDateFormat("MM-dd");
+        String today_date = date.format(Today);
+
+        SimpleDateFormat year = new SimpleDateFormat("yyyy");
+        SimpleDateFormat Month = new SimpleDateFormat("MM");
+        SimpleDateFormat Day = new SimpleDateFormat("dd");
 
         JPanel TREND = new JPanel();    // 트랜드보기 ui 설정
         TREND.setBackground(new Color(247,241,255));
@@ -578,35 +587,18 @@ public class trend extends JPanel{
         //그래프
 
         JPanel GraphPanel1 = new JPanel();
-        GraphPanel1.setBounds(345, 96, 699, 539);
+        GraphPanel1.setBounds(345, 96, 700, 540);
         TREND.add(GraphPanel1);
         GraphPanel1.setLayout(cards);
 
-        JPanel page1 = new JPanel();
         GraphPanel1.add(mainPanel1, "1");
 
-        JLabel lblNewLabel = new JLabel("New label");
-        page1.add(lblNewLabel);
-
-        JPanel page2 = new JPanel();
         GraphPanel1.add(mainPanel2, "2");
 
-        JLabel lblNewLabel_1 = new JLabel("12323");
-        page2.add(lblNewLabel_1);
-
-        JPanel page3 = new JPanel();
         GraphPanel1.add(mainPanel3, "3");
 
-        JLabel lblNewLabel_2 = new JLabel("2222");
-        page3.add(lblNewLabel_2);
-
-        JPanel page4 = new JPanel();
         GraphPanel1.add(mainPanel4, "4");
 
-        JLabel lblNewLabel_3 = new JLabel("333333");
-        page4.add(lblNewLabel_3);
-
-        JPanel page5 = new JPanel();
         GraphPanel1.add(mainPanel5, "5");
 
 
@@ -626,13 +618,14 @@ public class trend extends JPanel{
         prev.setContentAreaFilled(false);
         TREND.add(prev);
 
-
+        new Draw(G_c[0]);
 
         prev.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(i>0) {
                     cards.previous(GraphPanel1);
                     i--;
+                    new Draw(G_c[i]);
                 }
             }
         });
@@ -642,6 +635,7 @@ public class trend extends JPanel{
                 if(i<4) {
                     cards.next(GraphPanel1);
                     i++;
+                    new Draw(G_c[i]);
                 }
             }
         });

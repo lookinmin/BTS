@@ -16,14 +16,14 @@ import javax.swing.*;
 public class Draw extends JPanel {
 
     private static final int MAX_SCORE = 100;
-    private static final int WIDTH = 699;              //프레임 가로
-    private static final int HEIGHT = 539;              //프레임 세로
-    private static final int BORDER_GAP = 50;           //x, y를 그리는 간격 선분이 프레임의 겉면과 얼마나 떨어져 있는 지
-    public Color GRAPH_COLOR;
-    public Color GRAPH_POINT_COLOR;
-    private static final Stroke GRAPH_STROKE = new BasicStroke(3f);
+    private static final int WIDTH = 600;              //프레임 가로
+    private static final int HEIGHT = 440;              //프레임 세로
+    private static final int BORDER_GAP = 10;           //x, y를 그리는 간격 선분이 프레임의 겉면과 얼마나 떨어져 있는 지
+    public static Color GRAPH_COLOR;
+    public static Color GRAPH_POINT_COLOR = Color.BLACK;
+    private static final Stroke GRAPH_STROKE = new BasicStroke(4f);
     private static final int GRAPH_POINT_WIDTH = 7;
-    private static final int Y_HATCH_CNT = 7;
+    private static final int Y_HATCH_CNT = 10;
     private List<Integer> scores;
 
     public Draw(List<Integer> scores) {
@@ -32,15 +32,15 @@ public class Draw extends JPanel {
     public Draw() throws IOException {
     }
 
-    public Draw(Color c1, Color c2){
-        this.GRAPH_COLOR = c1;
-        this.GRAPH_POINT_COLOR = c2;
+    public Draw(Color c1){
+        GRAPH_COLOR = c1;
     }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
 
         double xScale = ((double) getWidth() - 2 * BORDER_GAP) / (scores.size() - 1);
         double yScale = ((double) getHeight() - 2 * BORDER_GAP) / (MAX_SCORE - 1);
