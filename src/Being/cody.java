@@ -131,7 +131,7 @@ public class cody extends JFrame implements DropTargetListener {
     }
 
     private void DBHandle(String postText) throws IOException {
-        String pilePath = "C:\\Users\\ancx1\\BTS\\src\\nowID.txt";//BTS-main안 텍스트파일
+        String pilePath = "C:\\Users\\sdjmc\\IdeaProjects\\BTS-main\\src\\nowID.txt";//BTS-main안 텍스트파일
         String userID = "";
         try {
             BufferedReader inFile = new BufferedReader(new FileReader(pilePath));
@@ -155,7 +155,7 @@ public class cody extends JFrame implements DropTargetListener {
         String server = "localhost"; // MySQL 서버 주소
         String database = "example"; // MySQL DATABASE 이름
         String user_name = "root"; //  MySQL 서버 아이디
-        String password = "minsu0418"; // MySQL 서버 비밀번호
+        String password = "qwer1234"; // MySQL 서버 비밀번호
 
         // 1.드라이버 로딩
         try {
@@ -165,7 +165,6 @@ public class cody extends JFrame implements DropTargetListener {
             e.printStackTrace();
         }
 
-        String decodeImg = null;
         // 2.연결
         try {
             con = DriverManager.getConnection("jdbc:mysql://" + server + "/" + database + "?useSSL=false", user_name, password);
@@ -180,10 +179,10 @@ public class cody extends JFrame implements DropTargetListener {
                 pstmt = con.prepareStatement(sql);
                 //name, text, pic, date, like 순서로 저장
 
-                pstmt.setString(1, userID);
-                pstmt.setString(2, postText);
-                pstmt.setString(3, imgEncode);
-                pstmt.setString(4, postTime);
+                pstmt.setString(1, postTime);
+                pstmt.setString(2, userID);
+                pstmt.setString(3, postText);
+                pstmt.setString(4, imgEncode);
                 pstmt.setInt(5, like);
 
                 // 업데이트
@@ -196,23 +195,6 @@ public class cody extends JFrame implements DropTargetListener {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
-//            Statement statement = con.createStatement();
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM example.post");
-//
-//
-//            while(resultSet.next()){
-//                String id = resultSet.getString("name");
-//                String text = resultSet.getString("text");
-//                String pic = resultSet.getString("picture");
-//                String date = resultSet.getString("date");
-//                int Like = resultSet.getInt("like");
-//                decodeImg = pic;
-//            }
-//
-//            resultSet.close();
-//            statement.close();
-//            con.close();
         } catch(SQLException e) {
             System.err.println("con 오류:" + e.getMessage());
             e.printStackTrace();
@@ -257,13 +239,19 @@ public class cody extends JFrame implements DropTargetListener {
                 //파일명 얻어오기
                 List list = (List) tr.getTransferData(DataFlavor.javaFileListFlavor);
 
-                BufferedImage image; //로컬 파일을 사용하는 경우
-
-                image = ImageIO.read((File) list.get(0));
+//                BufferedImage image; //로컬 파일을 사용하는 경우
+//
+//                image = ImageIO.read((File) list.get(0));
 
                 pilePath = (File) list.get(0);
 
-                picLabel.setIcon(new ImageIcon(image));//picLabel에 드래그한 사진 띄움
+                ImageIcon icon = new ImageIcon(String.valueOf(pilePath));
+                Image img = icon.getImage();
+                Image changeImg = img.getScaledInstance(512, 512, Image.SCALE_SMOOTH);
+                ImageIcon changeIcon = new ImageIcon(changeImg);
+
+                picLabel.setIcon(changeIcon);//picLabel에 드래그한 사진 띄움
+
                 frame.add(picPanel);
 
                 frame.setVisible(true);
@@ -296,5 +284,4 @@ public class cody extends JFrame implements DropTargetListener {
         System.out.println("dragExit");
     }
 }
-
 
