@@ -32,6 +32,7 @@ public class menu extends JFrame {
     ImageIcon redHeart = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\heart.png");
 
     ArrayList<PostData> postData = new ArrayList<>();
+    ArrayList<JPanel> postPanel = new ArrayList<>();
     /**
      * Launch the application.
      */
@@ -141,83 +142,20 @@ public class menu extends JFrame {
         panel.setBackground(new Color(250,250,250));
         GridBagLayout gbl_panel = new GridBagLayout();
         gbl_panel.columnWidths = new int[] {400,400,400};
-        gbl_panel.rowHeights = new int[]{520, 520};
+        int[] rowNum = new int[postData.size()/3+1];
+        for(int i=0;i<postData.size()/3+1;i++)
+            rowNum[i] = 520;
+        gbl_panel.rowHeights = rowNum;
         gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0};
         gbl_panel.rowWeights = new double[]{0.0, 0.0};
         panel.setLayout(gbl_panel);
 
-        JPanel panel1 = new JPanel();
-        panel1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.LIGHT_GRAY));
-        panel1.setBackground(Color.WHITE);
-        GridBagConstraints gbc_panel1 = new GridBagConstraints();
-        panel1.setLayout(null);
-        gbc_panel1.insets = new Insets(30, 35, 10, 20);
-        gbc_panel1.fill = GridBagConstraints.BOTH;
-        gbc_panel1.gridx = 0;
-        gbc_panel1.gridy = 0;
-        panel.add(panel1, gbc_panel1);
+        for(int i=0;i<postData.size();i++){
+            postPanel.add(MakeNewPanel(panel, i));
+            makeimg(postPanel.get(i),postData.get(postData.size()-(i+1)).getPic(),postData.get(postData.size()-(i+1)).getId(),
+                    postData.get(postData.size()-(i+1)).getText(),postData.get(postData.size()-(i+1)).getLike());
 
-        JPanel panel2 = new JPanel();
-        panel2.setLayout(null);
-        panel2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.LIGHT_GRAY));
-        panel2.setBackground(Color.WHITE);
-        GridBagConstraints gbc_panel2 = new GridBagConstraints();
-        gbc_panel2.insets = new Insets(30, 30, 10, 25);
-        gbc_panel2.fill = GridBagConstraints.BOTH;
-        gbc_panel2.gridx = 1;
-        gbc_panel2.gridy = 0;
-        panel.add(panel2, gbc_panel2);
-
-        JPanel panel3 = new JPanel();
-        panel3.setLayout(null);
-        panel3.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.LIGHT_GRAY));
-        panel3.setBackground(Color.WHITE);
-        GridBagConstraints gbc_panel3 = new GridBagConstraints();
-        gbc_panel3.insets = new Insets(30, 20, 10, 35);
-        gbc_panel3.fill = GridBagConstraints.BOTH;
-        gbc_panel3.gridx = 2;
-        gbc_panel3.gridy = 0;
-        panel.add(panel3, gbc_panel3);
-
-        JPanel panel4 = new JPanel();
-        panel4.setLayout(null);
-        panel4.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.LIGHT_GRAY));
-        panel4.setBackground(Color.WHITE);
-        GridBagConstraints gbc_panel4 = new GridBagConstraints();
-        gbc_panel4.insets = new Insets(20, 35, 30, 20);
-        gbc_panel4.fill = GridBagConstraints.BOTH;
-        gbc_panel4.gridx = 0;
-        gbc_panel4.gridy = 1;
-        panel.add(panel4, gbc_panel4);
-
-        JPanel panel5 = new JPanel();
-        panel5.setLayout(null);
-        panel5.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.LIGHT_GRAY));
-        panel5.setBackground(Color.WHITE);
-        GridBagConstraints gbc_panel5 = new GridBagConstraints();
-        gbc_panel5.insets = new Insets(20, 30, 30, 25);
-        gbc_panel5.fill = GridBagConstraints.BOTH;
-        gbc_panel5.gridx = 1;
-        gbc_panel5.gridy = 1;
-        panel.add(panel5, gbc_panel5);
-
-        JPanel panel6 = new JPanel();
-        panel6.setLayout(null);
-        panel6.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.LIGHT_GRAY));
-        panel6.setBackground(Color.WHITE);
-        GridBagConstraints gbc_panel6 = new GridBagConstraints();
-        gbc_panel6.insets = new Insets(20, 20, 30, 35);
-        gbc_panel6.fill = GridBagConstraints.BOTH;
-        gbc_panel6.gridx = 2;
-        gbc_panel6.gridy = 1;
-        panel.add(panel6, gbc_panel6);
-
-        makeimg(panel1,postData.get(postData.size()-1).getPic(),postData.get(postData.size()-1).getId(),postData.get(postData.size()-1).getText(),postData.get(postData.size()-1).getLike());
-        makeimg(panel2,postData.get(postData.size()-2).getPic(),postData.get(postData.size()-2).getId(),postData.get(postData.size()-2).getText(),postData.get(postData.size()-2).getLike());
-        makeimg(panel3,postData.get(postData.size()-3).getPic(),postData.get(postData.size()-3).getId(),postData.get(postData.size()-3).getText(),postData.get(postData.size()-3).getLike());
-        makeimg(panel4,postData.get(postData.size()-4).getPic(),postData.get(postData.size()-4).getId(),postData.get(postData.size()-4).getText(),postData.get(postData.size()-4).getLike());
-        makeimg(panel5,postData.get(postData.size()-5).getPic(),postData.get(postData.size()-5).getId(),postData.get(postData.size()-5).getText(),postData.get(postData.size()-5).getLike());
-        makeimg(panel6,postData.get(postData.size()-6).getPic(),postData.get(postData.size()-6).getId(),postData.get(postData.size()-6).getText(),postData.get(postData.size()-6).getLike());
+        }
 
         JPanel TopBar = new JPanel();
         TopBar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(128, 128, 128)));
@@ -225,7 +163,6 @@ public class menu extends JFrame {
         TopBar.setBackground(new Color(247,241,255));
         MAINMENU.add(TopBar);
         TopBar.setLayout(null);
-
 
         JButton Home = new JButton(home);
         Home.setBounds(513, 10, 50, 50);
@@ -287,8 +224,6 @@ public class menu extends JFrame {
             }
         });
 
-
-
         GO_Trend.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Object obj = e.getSource();
@@ -300,8 +235,6 @@ public class menu extends JFrame {
 
             }
         });
-
-
 
         Go_Cody.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -320,6 +253,20 @@ public class menu extends JFrame {
             }
         });
 
+    }
+
+    private JPanel MakeNewPanel(JPanel panel, int i) {
+        JPanel newPanel = new JPanel();
+        newPanel.setLayout(null);
+        newPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.LIGHT_GRAY));
+        newPanel.setBackground(Color.WHITE);
+        GridBagConstraints gbc_panel = new GridBagConstraints();
+        gbc_panel.insets = new Insets(20, 20, 20, 35);
+        gbc_panel.fill = GridBagConstraints.BOTH;
+        gbc_panel.gridx = i%3;
+        gbc_panel.gridy = i/3;
+        panel.add(newPanel, gbc_panel);
+        return newPanel;
     }
 
     public void setVisible(boolean b){
@@ -378,7 +325,7 @@ public class menu extends JFrame {
                 String server = "localhost"; // MySQL 서버 주소
                 String database = "example"; // MySQL DATABASE 이름
                 String user_name = "root"; //  MySQL 서버 아이디
-                String password = "qwer1234"; // MySQL 서버 비밀번호
+                String password = "minsu0418"; // MySQL 서버 비밀번호
 
                 // 1.드라이버 로딩
                 try {

@@ -19,13 +19,10 @@ public class login extends JFrame{
     private JPasswordField LOGIN_PW_INSERT;
     private Font f1;
     private ImageIcon icon;
-    ImageIcon img = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\cancel.png");
-    ImageIcon img2 = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\Minimize2.png");
-    ImageIcon img3 = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\Logo.png");
-    ImageIcon img4 = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\SubLogo.png");
+    ImageIcon img = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\cancel.png");
+    ImageIcon img2 = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\Minimize2.png");
+    ImageIcon img3 = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\Logo2.png");
 
-
-    Date today = new Date();
     /**
      * Launch the application.
      */
@@ -55,52 +52,53 @@ public class login extends JFrame{
     private void initialize() {
         frame = new JFrame();
         frame.setUndecorated(true);
-        frame.setBounds(100, 100, 700, 400);
+        frame.setBounds(100, 100, 1000, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.getContentPane().setLayout(null);
         frame.setResizable(false);
 
-        f1 = new Font("이사만루체 Medium",Font.PLAIN, 15);
+        f1 = new Font("이사만루체 Medium",Font.PLAIN,14);
+
 
         JPanel LOGINPAGE = new JPanel();
 
         LOGINPAGE.setBackground(new Color(247,241,255));
 
-        LOGINPAGE.setBounds(0, 0, 700, 400); // 로그인 페이지 ui
+        LOGINPAGE.setBounds(0, 0, 1000, 600); // 로그인 페이지 ui
         frame.getContentPane().add(LOGINPAGE);
         LOGINPAGE.setLayout(null);
 
         RoundedButton btnLOGIN = new RoundedButton("LOGIN");
         btnLOGIN.setForeground(Color.WHITE);
-        btnLOGIN.setFont(f1);
         btnLOGIN.setBackground(new Color(99,0,238));
+        btnLOGIN.setFont(f1);
 
-        btnLOGIN.setBounds(477, 231, 170, 30);
+        btnLOGIN.setBounds(737, 452, 170, 30);
         LOGINPAGE.add(btnLOGIN);
 
         JLabel LOGIN_ID = new JLabel("ID");
         LOGIN_ID.setForeground(Color.BLACK);
         LOGIN_ID.setFont(f1);
-        LOGIN_ID.setBounds(475, 106, 70, 23);
+        LOGIN_ID.setBounds(735, 327, 70, 23);
         LOGINPAGE.add(LOGIN_ID);
 
         JLabel LOGIN_PW = new JLabel("PASSWORD");
         LOGIN_PW.setForeground(Color.BLACK);
         LOGIN_PW.setFont(f1);
-        LOGIN_PW.setBounds(475, 161, 100, 23);
+        LOGIN_PW.setBounds(735, 382, 100, 23);
         LOGINPAGE.add(LOGIN_PW);
 
         LOGIN_ID_INSERT = new JTextField();
-        LOGIN_ID_INSERT.setBounds(477, 131, 170, 25);
+        LOGIN_ID_INSERT.setBounds(737, 352, 170, 25);
+        LOGIN_ID_INSERT.setFont(f1);
         LOGIN_ID_INSERT.setBorder(new MatteBorder(0, 0, 2, 0, (Color) new Color(0, 0, 0)));
         LOGIN_ID_INSERT.setOpaque(false);
-        LOGIN_ID_INSERT.setFont(f1);
         LOGINPAGE.add(LOGIN_ID_INSERT);
         LOGIN_ID_INSERT.setColumns(10);
 
         LOGIN_PW_INSERT = new JPasswordField();
-        LOGIN_PW_INSERT.setBounds(477, 186, 170, 25);
+        LOGIN_PW_INSERT.setBounds(737, 407, 170, 25);
         LOGIN_PW_INSERT.setBorder(new MatteBorder(0, 0, 2, 0, (Color) new Color(0, 0, 0)));
         LOGIN_PW_INSERT.setOpaque(false);
         LOGINPAGE.add(LOGIN_PW_INSERT);
@@ -111,30 +109,26 @@ public class login extends JFrame{
         btnLOGINtoMEMBERSHIP.setForeground(Color.BLACK);
         btnLOGINtoMEMBERSHIP.setBorderPainted(false);
         btnLOGINtoMEMBERSHIP.setContentAreaFilled(false);
-        btnLOGINtoMEMBERSHIP.setBounds(550, 271, 120, 25);
+        btnLOGINtoMEMBERSHIP.setBounds(820, 492, 100, 25);
         LOGINPAGE.add(btnLOGINtoMEMBERSHIP);
 
         JButton Minimize = new JButton(img2);
-        Minimize.setBounds(620, 10, 32, 32);
+        Minimize.setBounds(912, 10, 32, 32);
         Minimize.setBorderPainted(false);
         Minimize.setFocusPainted(false);
         Minimize.setContentAreaFilled(false);
         LOGINPAGE.add(Minimize);
 
         JButton exit = new JButton(img);
-        exit.setBounds(658, 10, 32, 32);
+        exit.setBounds(956, 10, 32, 32);
         exit.setBorderPainted(false);
         exit.setFocusPainted(false);
         exit.setContentAreaFilled(false);
         LOGINPAGE.add(exit);
 
         JLabel BTS = new JLabel(img3);
-        BTS.setBounds(87, 10, 247, 237);
+        BTS.setBounds(72, 10, 512, 512);
         LOGINPAGE.add(BTS);
-
-        JLabel lblNewLabel = new JLabel(img4);
-        lblNewLabel.setBounds(22, 248, 383, 82);
-        LOGINPAGE.add(lblNewLabel);
 
         exit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

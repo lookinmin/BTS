@@ -47,7 +47,6 @@ import javax.swing.border.LineBorder;
 
 public class trend extends JPanel{
     private JFrame frame;
-    private ImageIcon icon;
     ImageIcon img = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\cancel.png");
     ImageIcon img2 = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\minimize2.png");
     ImageIcon img4 = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\ranking.png");
@@ -72,6 +71,9 @@ public class trend extends JPanel{
     String today, beforeWeek;
 
     ArrayList<String> musinsaArr = new ArrayList<>();          //무신사에서 받은 상위 5개 종목 데이터가 들어올 배열
+    Integer arrnum[] = {0, 1, 2, 3, 4};
+
+
 
     ArrayList<Integer> Item1 = new ArrayList<>();
     ArrayList<Integer> Item2 = new ArrayList<>();
@@ -97,9 +99,8 @@ public class trend extends JPanel{
     JPanel subpanel5 = new JPanel();
 
 
-    /**
-     * Launch the application.
-     */
+    JLabel TopName = new JLabel("");
+
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -139,7 +140,6 @@ public class trend extends JPanel{
         score4.addAll(Item4);
         score5.addAll(Item5);
 
-
         mainPanel1 = new Draw(score1);
         mainPanel1.setBounds(32, 32, 717, 536);
         mainPanel1.setLayout(null);
@@ -148,11 +148,9 @@ public class trend extends JPanel{
         mainPanel2.setBounds(32, 32, 717, 536);
         mainPanel2.setLayout(null);
 
-
         mainPanel3 = new Draw(score3);
         mainPanel3.setBounds(32, 32, 717, 536);
         mainPanel3.setLayout(null);
-
 
         mainPanel4 = new Draw(score4);
         mainPanel4.setBounds(32, 32, 717, 536);
@@ -162,15 +160,12 @@ public class trend extends JPanel{
         mainPanel5.setBounds(32, 32, 717, 536);
         mainPanel5.setLayout(null);
 
-
         initialize();
     }
 
     private void Crawling() throws IOException {
         String URL = "https://search.musinsa.com/ranking/keyword";
-
         Document document = Jsoup.connect(URL).get();
-
         Elements elements= document.select("ol[class=\" sranking_list\"]");
         int i = 0;
         for(Element element:elements.select("p[class=\" p_srank\"]")){
@@ -188,7 +183,6 @@ public class trend extends JPanel{
         String[] str2 = str1[1].split("<");
         return str2[0];
     }
-
 
     private void API(){
         requestHeaders.put("X-Naver-Client-Id", clientId);
@@ -458,7 +452,7 @@ public class trend extends JPanel{
     private void initialize() {
         f1 = new Font("이사만루체 Medium",Font.PLAIN,14);
         frame = new JFrame();
-        frame.setBounds(100, 100, 1200, 860);
+        frame.setBounds(100, 100, 1400, 860);
         frame.setUndecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
@@ -470,61 +464,50 @@ public class trend extends JPanel{
         mainPanel4.setBackground(new Color(255,255,255));
         mainPanel5.setBackground(new Color(255,255,255));
 
-
-
         SimpleDateFormat year = new SimpleDateFormat("yyyy");
         SimpleDateFormat Month = new SimpleDateFormat("MM");
         SimpleDateFormat Day = new SimpleDateFormat("dd");
 
-
-
-
         JPanel TREND = new JPanel();    // 트랜드보기 ui 설정
         TREND.setBorder(new MatteBorder(0, 1, 0, 1, (Color) Color.GRAY));
         TREND.setBackground(new Color(250,250,250));
-        TREND.setBounds(0, 0, 1200, 860);
+        TREND.setBounds(0, 0, 1400, 860);
         frame.getContentPane().add(TREND);
         TREND.setLayout(null);
 
-
-
-
         JButton prev = new JButton(Prev);
-        prev.setBounds(280, 96, 60, 600);
+        prev.setBounds(410, 150, 60, 600);
         prev.setBorderPainted(false);
         prev.setContentAreaFilled(false);
         TREND.add(prev);
 
-
-
         JPanel BottomPanel = new JPanel();
         BottomPanel.setBorder(new MatteBorder(1, 0, 1, 0, (Color) new Color(128, 128, 128)));
         BottomPanel.setBackground(new Color(247, 241, 255));
-        BottomPanel.setBounds(1, 830, 1198, 30);
+        BottomPanel.setBounds(1, 830, 1398, 30);
         TREND.add(BottomPanel);
 
         JPanel panel = new JPanel();
         panel.setBorder(new MatteBorder(1, 0, 1, 0, (Color) Color.GRAY));
         panel.setBackground(new Color(244, 238, 255));
-        panel.setBounds(1, 0, 1198, 70);
+        panel.setBounds(1, 0, 1398, 70);
         TREND.add(panel);
         panel.setLayout(null);
 
         JLabel Logo = new JLabel(MainLogo);
-        Logo.setBounds(12, 12, 200, 46);
+        Logo.setBounds(128, 12, 200, 46);
         panel.add(Logo);
 
 
         JButton Home = new JButton(home);
-        Home.setBounds(513, 10, 50, 50);
+        Home.setBounds(613, 12, 50, 50);
         panel.add(Home);
-
         Home.setFocusPainted(false);
         Home.setContentAreaFilled(false);
         Home.setBorderPainted(false);
 
         JButton Go_Cody = new JButton(cody);
-        Go_Cody.setBounds(575, 10, 50, 50);
+        Go_Cody.setBounds(675, 12, 50, 50);
         panel.add(Go_Cody);
         Go_Cody.setBorderPainted(false);
         Go_Cody.setFocusPainted(false);
@@ -532,21 +515,21 @@ public class trend extends JPanel{
 
 
         JButton GO_Trend = new JButton(trend);
-        GO_Trend.setBounds(637, 10, 50, 50);
+        GO_Trend.setBounds(737, 12, 50, 50);
         panel.add(GO_Trend);
         GO_Trend.setBorderPainted(false);
         GO_Trend.setFocusPainted(false);
         GO_Trend.setContentAreaFilled(false);
 
         JButton Minimize = new JButton(img2);
-        Minimize.setBounds(1112, 19, 32, 32);
+        Minimize.setBounds(1311, 19, 32, 32);
         panel.add(Minimize);
         Minimize.setBorderPainted(false);
         Minimize.setFocusPainted(false);
         Minimize.setContentAreaFilled(false);
 
         JButton exit = new JButton(img);
-        exit.setBounds(1156, 19, 32, 32);
+        exit.setBounds(1355, 19, 32, 32);
         panel.add(exit);
         exit.setBorderPainted(false);
         exit.setFocusPainted(false);
@@ -555,7 +538,7 @@ public class trend extends JPanel{
         // 랭킹 패널
         JPanel RankingPanel = new JPanel();
         RankingPanel.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(154, 94, 253)));
-        RankingPanel.setBounds(30, 192, 240, 244);
+        RankingPanel.setBounds(75, 192, 240, 244);
         RankingPanel.setBackground(Color.WHITE);
         TREND.add(RankingPanel);
         RankingPanel.setLayout(null);
@@ -593,15 +576,15 @@ public class trend extends JPanel{
 
 
         JLabel Rankimg = new JLabel(img4); //랭킹 이미지
-        Rankimg.setBounds(30, 120, 60, 60);
+        Rankimg.setBounds(75, 122, 60, 60);
         TREND.add(Rankimg);
 
         JLabel Musinsa = new JLabel(musinsa);
-        Musinsa.setBounds(90, 446, 180, 30);
+        Musinsa.setBounds(135, 446, 180, 30);
         TREND.add(Musinsa);
 
         JLabel Naver = new JLabel(naver);
-        Naver.setBounds(915, 705, 180, 30);
+        Naver.setBounds(1065, 760, 180, 30);
         TREND.add(Naver);
 
 
@@ -635,7 +618,7 @@ public class trend extends JPanel{
 
         JPanel GraphPanel1 = new JPanel();
         GraphPanel1.setBackground(Color.WHITE);
-        GraphPanel1.setBounds(345, 96, 750, 600);
+        GraphPanel1.setBounds(475, 150, 770, 600);
         TREND.add(GraphPanel1);
         GraphPanel1.setLayout(cards);
 
@@ -653,7 +636,7 @@ public class trend extends JPanel{
         Makepanel(subpanel5);
 
         JButton next = new JButton(Next);
-        next.setBounds(1103, 96, 60, 600);
+        next.setBounds(1250, 150, 60, 600);
         next.setBorderPainted(false);
         next.setContentAreaFilled(false);
         TREND.add(next);
@@ -667,7 +650,7 @@ public class trend extends JPanel{
         JLabel Days = new JLabel(today_date);
         Days.setFont(new Font("이사만루체 Medium", Font.PLAIN, 14));
         Days.setHorizontalAlignment(SwingConstants.RIGHT);
-        Days.setBounds(106, 158, 164, 24);
+        Days.setBounds(151, 158, 164, 24);
         TREND.add(Days);
 
 
@@ -681,6 +664,9 @@ public class trend extends JPanel{
 
 
         new Draw(G_c[0]);
+        String top_label = musinsaArr.get(arrnum[i]);
+        System.out.println(top_label);
+        TopName.setText(top_label);
 
         next.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -688,6 +674,10 @@ public class trend extends JPanel{
                     cards.next(GraphPanel1);
                     i++;
                     new Draw(G_c[i]);
+                    String top_label = musinsaArr.get(arrnum[i]);
+                    System.out.println(top_label);
+                    TopName.setText(top_label);
+                    TopName.setVisible(true);
                 }
             }
         });
@@ -697,9 +687,14 @@ public class trend extends JPanel{
                     cards.previous(GraphPanel1);
                     i--;
                     new Draw(G_c[i]);
+                    String top_label = musinsaArr.get(arrnum[i]);
+                    System.out.println(top_label);
+                    TopName.setText(top_label);
+                    TopName.setVisible(true);
                 }
             }
         });
+
 
         exit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -748,11 +743,13 @@ public class trend extends JPanel{
             }
         });
 
+
     }
     public void Makepanel(JPanel panel) {
         panel.setLayout(null);
         panel.setBackground(Color.WHITE);
         panel.setBorder(new LineBorder(new Color(0, 0, 0)));
+
         JLabel undernum1 = new JLabel("1");
         undernum1.setFont(f1);
         undernum1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -814,12 +811,11 @@ public class trend extends JPanel{
         verticalNum3.setBounds(10, 28, 32, 32);
         panel.add(verticalNum3);
 
-        JLabel TopName = new JLabel("1");
+        TopName.setVisible(true);
         TopName.setHorizontalAlignment(SwingConstants.CENTER);
         TopName.setFont(f1);
         TopName.setBounds(556, 0, 182, 32);
         panel.add(TopName);
-
     }
 
 

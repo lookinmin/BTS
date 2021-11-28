@@ -12,10 +12,13 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
-import java.util.logging.SimpleFormatter;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
+
+
 import java.util.List;
+import javax.swing.border.LineBorder;
 
 public class cody extends JFrame implements DropTargetListener {
 
@@ -25,12 +28,19 @@ public class cody extends JFrame implements DropTargetListener {
     JPanel picPanel;
     JLabel picLabel;
     JTextField txtwriting;
-
+    private Font f1;
+    ImageIcon img = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\cancel.png");
+    ImageIcon img2 = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\minimize2.png");
+    ImageIcon cody = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\cody1.png");
+    ImageIcon trend = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\trend1.png");
+    ImageIcon home = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\home1.png");
+    ImageIcon MainLogo = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\MainLogo.png");
+    ImageIcon dragpic = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\dragpic2.png");
+    ImageIcon post = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\post.png");
     File pilePath;
 
     String imgEncode;
 
-    Date today = new Date();
     /**
      * Launch the application.
      */
@@ -57,16 +67,17 @@ public class cody extends JFrame implements DropTargetListener {
     private void InitDragAndDrop() {
         picPanel = new JPanel();
 
+        picLabel = new JLabel(dragpic);
+        picLabel.setBounds(0,0,512,512);
+        picPanel.add(picLabel);
+
+
         dropTarget = new DropTarget(picPanel, DnDConstants.ACTION_COPY_OR_MOVE, this, true, null);
-        frame.add(picPanel, BorderLayout.CENTER);
+        frame.getContentPane().add(picPanel, BorderLayout.CENTER);
         picPanel.setSize(512, 512);
-        picPanel.setBounds(333, 50, 512, 512);
-        picPanel.setBackground(Color.gray);
-
-        picLabel = new JLabel("사진을 드래그 해주세요");
-
-        picPanel.setLayout(new BorderLayout());
-        picPanel.add(picLabel, BorderLayout.CENTER);
+        picPanel.setBounds(444, 150, 512, 512);
+        picPanel.setBackground(Color.WHITE);
+        picPanel.setLayout(null);
 
     }
 
@@ -75,34 +86,105 @@ public class cody extends JFrame implements DropTargetListener {
      */
     private void initialize() {
         frame = new JFrame();
-        frame.setBounds(100, 100, 1200, 800);
+        frame.setBounds(100, 100, 1400, 860);
+        frame.setUndecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.getContentPane().setLayout(null);
         frame.setResizable(false);
 
+        f1 = new Font("이사만루체 Medium",Font.PLAIN,14);
+
         InitDragAndDrop();//drag and drop 되게 설정
 
         JPanel CODYLINE = new JPanel();  // 코디 한줄평 업로드 ui 설정
-        CODYLINE.setBounds(0, 0, 1200, 800);
+        CODYLINE.setBounds(0, 0, 1400, 860);
+        CODYLINE.setBackground(new Color(250, 250, 250));
         frame.getContentPane().add(CODYLINE);
         CODYLINE.setLayout(null);
 
-        JButton btnWriting = new JButton("\uAE00 \uC791\uC131\uD558\uAE30");
-        btnWriting.setBounds(800, 600, 160, 36);
-        CODYLINE.add(btnWriting);
+        JPanel panel = new JPanel();
+        panel.setBorder(new MatteBorder(1, 0, 1, 0, (Color) Color.GRAY));
+        panel.setBackground(new Color(244, 238, 255));
+        panel.setBounds(1, 0, 1398, 70);
+        CODYLINE.add(panel);
+        panel.setLayout(null);
 
-        JLabel lblcodyline = new JLabel("\uCF54\uB514 \uD55C\uC904 \uD3C9");
-        lblcodyline.setFont(new Font("굴림", Font.PLAIN, 18));
-        lblcodyline.setBounds(42, 600, 163, 49);
-        CODYLINE.add(lblcodyline);
+        JPanel BottomPanel = new JPanel();
+        BottomPanel.setBorder(new MatteBorder(1, 0, 1, 0, (Color) new Color(128, 128, 128)));
+        BottomPanel.setBackground(new Color(247, 241, 255));
+        BottomPanel.setBounds(1, 830, 1398, 30);
+        CODYLINE.add(BottomPanel);
+
+        JLabel Logo = new JLabel(MainLogo);
+        Logo.setBounds(128, 12, 200, 46);
+        panel.add(Logo);
+
+
+        JButton Home = new JButton(home);
+        Home.setBounds(613, 12, 50, 50);
+        panel.add(Home);
+        Home.setFocusPainted(false);
+        Home.setContentAreaFilled(false);
+        Home.setBorderPainted(false);
+
+        JButton Go_Cody = new JButton(cody);
+        Go_Cody.setBounds(675, 12, 50, 50);
+        panel.add(Go_Cody);
+        Go_Cody.setBorderPainted(false);
+        Go_Cody.setFocusPainted(false);
+        Go_Cody.setContentAreaFilled(false);
+
+
+        JButton GO_Trend = new JButton(trend);
+        GO_Trend.setBounds(737, 12, 50, 50);
+        panel.add(GO_Trend);
+        GO_Trend.setBorderPainted(false);
+        GO_Trend.setFocusPainted(false);
+        GO_Trend.setContentAreaFilled(false);
+
+        JButton Minimize = new JButton(img2);
+        Minimize.setBounds(1311, 19, 32, 32);
+        panel.add(Minimize);
+        Minimize.setBorderPainted(false);
+        Minimize.setFocusPainted(false);
+        Minimize.setContentAreaFilled(false);
+
+        JButton exit = new JButton(img);
+        exit.setBounds(1355, 19, 32, 32);
+        panel.add(exit);
+        exit.setBorderPainted(false);
+        exit.setFocusPainted(false);
+        exit.setContentAreaFilled(false);
+
+        JPanel panel_1 = new JPanel();
+        panel_1.setBackground(Color.WHITE);
+        panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+        panel_1.setBounds(443, 100, 514, 700);
+        CODYLINE.add(panel_1);
+        panel_1.setLayout(null);
 
         txtwriting = new JTextField();
-        txtwriting.setBounds(239, 600, 480, 49);
-        CODYLINE.add(txtwriting);
+        txtwriting.setBounds(24, 573, 471, 44);
+        panel_1.add(txtwriting);
+        txtwriting.setFont(f1);
+        txtwriting.setBorder(new MatteBorder(0, 0, 1, 0, (Color) Color.BLACK));
         txtwriting.setColumns(10);
 
-        btnWriting.addActionListener(new ActionListener() {//글작성하기 버튼
+        JLabel Name = new JLabel("ID");
+        Name.setFont(f1);
+        Name.setBounds(24, 10, 164, 34);
+        panel_1.add(Name);
+        Name.setHorizontalAlignment(SwingConstants.LEFT);
+
+        JButton Post = new JButton(post);
+        Post.setBounds(438, 626, 64, 64);
+        panel_1.add(Post);
+        Post.setFocusPainted(false);
+        Post.setContentAreaFilled(false);
+        Post.setBorderPainted(false);
+
+        Post.addActionListener(new ActionListener() {//글작성하기 버튼
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -115,23 +197,56 @@ public class cody extends JFrame implements DropTargetListener {
             }
         });
 
-        JButton btnCODYTOMAIN = new JButton("\uB3CC\uC544\uAC00\uAE30");
-
-        btnCODYTOMAIN.setBounds(1000, 600, 160, 36);
-        CODYLINE.add(btnCODYTOMAIN);
-
-        btnCODYTOMAIN.addActionListener(new ActionListener() {
+        exit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                menu r = new menu();
-                r.setVisible(true);
                 frame.dispose();
             }
         });
 
+        Minimize.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.setState(Frame.ICONIFIED);
+            }
+        });
+
+        Home.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Object obj = e.getSource();
+                if(obj == Home) {
+                    menu r = new menu();
+                    r.setVisible(true);
+                    frame.dispose();
+                }
+
+            }
+        });
+
+        GO_Trend.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Object obj = e.getSource();
+                if(obj == GO_Trend) {
+                    trend r = new trend();
+                    r.setVisible(true);
+                    frame.dispose();
+                }
+            }
+        });
+
+        Go_Cody.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Object obj = e.getSource();
+                if(obj == Go_Cody) {
+                    cody r = new cody();
+                    r.setVisible(true);
+                    frame.dispose();
+                }
+
+            }
+        });
     }
 
     private void DBHandle(String postText) throws IOException {
-        String pilePath = "C:\\Users\\sdjmc\\IdeaProjects\\BTS-main\\src\\nowID.txt";//BTS-main안 텍스트파일
+        String pilePath = "C:\\Users\\ancx1\\BTS\\src\\nowID.txt";//BTS-main안 텍스트파일
         String userID = "";
         try {
             BufferedReader inFile = new BufferedReader(new FileReader(pilePath));
@@ -155,7 +270,7 @@ public class cody extends JFrame implements DropTargetListener {
         String server = "localhost"; // MySQL 서버 주소
         String database = "example"; // MySQL DATABASE 이름
         String user_name = "root"; //  MySQL 서버 아이디
-        String password = "qwer1234"; // MySQL 서버 비밀번호
+        String password = "minsu0418"; // MySQL 서버 비밀번호
 
         // 1.드라이버 로딩
         try {
@@ -165,6 +280,7 @@ public class cody extends JFrame implements DropTargetListener {
             e.printStackTrace();
         }
 
+        String decodeImg = null;
         // 2.연결
         try {
             con = DriverManager.getConnection("jdbc:mysql://" + server + "/" + database + "?useSSL=false", user_name, password);
@@ -179,10 +295,10 @@ public class cody extends JFrame implements DropTargetListener {
                 pstmt = con.prepareStatement(sql);
                 //name, text, pic, date, like 순서로 저장
 
-                pstmt.setString(1, postTime);
-                pstmt.setString(2, userID);
-                pstmt.setString(3, postText);
-                pstmt.setString(4, imgEncode);
+                pstmt.setString(1, userID);
+                pstmt.setString(2, postText);
+                pstmt.setString(3, imgEncode);
+                pstmt.setString(4, postTime);
                 pstmt.setInt(5, like);
 
                 // 업데이트
@@ -195,6 +311,23 @@ public class cody extends JFrame implements DropTargetListener {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+
+//            Statement statement = con.createStatement();
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM example.post");
+//
+//
+//            while(resultSet.next()){
+//                String id = resultSet.getString("name");
+//                String text = resultSet.getString("text");
+//                String pic = resultSet.getString("picture");
+//                String date = resultSet.getString("date");
+//                int Like = resultSet.getInt("like");
+//                decodeImg = pic;
+//            }
+//
+//            resultSet.close();
+//            statement.close();
+//            con.close();
         } catch(SQLException e) {
             System.err.println("con 오류:" + e.getMessage());
             e.printStackTrace();
@@ -239,20 +372,14 @@ public class cody extends JFrame implements DropTargetListener {
                 //파일명 얻어오기
                 List list = (List) tr.getTransferData(DataFlavor.javaFileListFlavor);
 
-//                BufferedImage image; //로컬 파일을 사용하는 경우
-//
-//                image = ImageIO.read((File) list.get(0));
+                BufferedImage image; //로컬 파일을 사용하는 경우
+
+                image = ImageIO.read((File) list.get(0));
 
                 pilePath = (File) list.get(0);
 
-                ImageIcon icon = new ImageIcon(String.valueOf(pilePath));
-                Image img = icon.getImage();
-                Image changeImg = img.getScaledInstance(512, 512, Image.SCALE_SMOOTH);
-                ImageIcon changeIcon = new ImageIcon(changeImg);
-
-                picLabel.setIcon(changeIcon);//picLabel에 드래그한 사진 띄움
-
-                frame.add(picPanel);
+                picLabel.setIcon(new ImageIcon(image));//picLabel에 드래그한 사진 띄움
+                frame.getContentPane().add(picPanel);
 
                 frame.setVisible(true);
 
@@ -284,4 +411,5 @@ public class cody extends JFrame implements DropTargetListener {
         System.out.println("dragExit");
     }
 }
+
 
