@@ -1,15 +1,9 @@
 package Being;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.Stroke;
+import java.awt.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
@@ -25,12 +19,14 @@ public class Draw extends JPanel {
     private static final int GRAPH_POINT_WIDTH = 7;
     private static final int Y_HATCH_CNT = 10;
     private List<Integer> scores;
+    private Font f1;
 
     public Draw(List<Integer> scores) {
         this.scores = scores;
     }
     public Draw() throws IOException {
     }
+
 
     public Draw(Color c1){
         GRAPH_COLOR = c1;
@@ -40,7 +36,7 @@ public class Draw extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+        f1 = new Font("이사만루체 Medium",Font.PLAIN,14);
 
         double xScale = ((double) getWidth() - 2 * BORDER_GAP) / (scores.size() - 1);
         double yScale = ((double) getHeight() - 2 * BORDER_GAP) / (MAX_SCORE - 1);
@@ -94,6 +90,7 @@ public class Draw extends JPanel {
             int ovalH = GRAPH_POINT_WIDTH;
             g2.fillOval(x, y, ovalW, ovalH);
         }
+
     }
 
     @Override

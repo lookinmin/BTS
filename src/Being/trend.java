@@ -64,6 +64,8 @@ public class trend extends JPanel{
     ImageIcon home = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\home1.png");
     ImageIcon MainLogo = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\MainLogo.png");
 
+
+
     int i=0;
     private CardLayout cards = new CardLayout();
     private Font f1;
@@ -71,8 +73,12 @@ public class trend extends JPanel{
     String today, beforeWeek;
 
     ArrayList<String> musinsaArr = new ArrayList<>();          //무신사에서 받은 상위 5개 종목 데이터가 들어올 배열
-    Integer arrnum[] = {0, 1, 2, 3, 4};
 
+
+    String[] week = new String[] {"월", "화", "수", "목", "금", "토", "일", "월", "화", "수", "목", "금", "토", "일"};
+    int dayOfWeekValue;
+
+    ArrayList<Integer> dayCnt = new ArrayList<>();
 
 
     ArrayList<Integer> Item1 = new ArrayList<>();
@@ -98,8 +104,6 @@ public class trend extends JPanel{
     JPanel subpanel4 = new JPanel();
     JPanel subpanel5 = new JPanel();
 
-
-    JLabel TopName = new JLabel("");
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -464,10 +468,6 @@ public class trend extends JPanel{
         mainPanel4.setBackground(new Color(255,255,255));
         mainPanel5.setBackground(new Color(255,255,255));
 
-        SimpleDateFormat year = new SimpleDateFormat("yyyy");
-        SimpleDateFormat Month = new SimpleDateFormat("MM");
-        SimpleDateFormat Day = new SimpleDateFormat("dd");
-
         JPanel TREND = new JPanel();    // 트랜드보기 ui 설정
         TREND.setBorder(new MatteBorder(0, 1, 0, 1, (Color) Color.GRAY));
         TREND.setBackground(new Color(250,250,250));
@@ -548,6 +548,7 @@ public class trend extends JPanel{
         rank1.setBounds(53, 10, 175, 32);
         rank1.setText(musinsaArr.get(0));
         rank1.setFont(f1);
+
         RankingPanel.add(rank1);
 
         JLabel rank2 = new JLabel("");
@@ -574,6 +575,12 @@ public class trend extends JPanel{
         rank5.setFont(f1);
         RankingPanel.add(rank5);
 
+        ArrayList<JLabel> Ranking = new ArrayList<>();
+        Ranking.add(rank1);
+        Ranking.add(rank2);
+        Ranking.add(rank3);
+        Ranking.add(rank4);
+        Ranking.add(rank5);
 
         JLabel Rankimg = new JLabel(img4); //랭킹 이미지
         Rankimg.setBounds(75, 122, 60, 60);
@@ -646,13 +653,18 @@ public class trend extends JPanel{
         Date Today = new Date();
         SimpleDateFormat date = new SimpleDateFormat("MM-dd");
         String today_date = date.format(Today);
+        LocalDate now = LocalDate.now();
+        dayOfWeekValue = now.getDayOfWeek().getValue();
+        JLabel Days = new JLabel(today_date+"-"+week[dayOfWeekValue-1]);
 
-        JLabel Days = new JLabel(today_date);
+
         Days.setFont(new Font("이사만루체 Medium", Font.PLAIN, 14));
         Days.setHorizontalAlignment(SwingConstants.RIGHT);
         Days.setBounds(151, 158, 164, 24);
         TREND.add(Days);
 
+
+        new Draw(G_c[0]);
 
         subpanel1.setLayout(null);
         subpanel1.add(mainPanel1);
@@ -661,12 +673,7 @@ public class trend extends JPanel{
         subpanel4.add(mainPanel4);
         subpanel5.add(mainPanel5);
 
-
-
-        new Draw(G_c[0]);
-        String top_label = musinsaArr.get(arrnum[i]);
-        System.out.println(top_label);
-        TopName.setText(top_label);
+        Ranking.get(0).setForeground(G_c[0]);
 
         next.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -674,10 +681,15 @@ public class trend extends JPanel{
                     cards.next(GraphPanel1);
                     i++;
                     new Draw(G_c[i]);
-                    String top_label = musinsaArr.get(arrnum[i]);
-                    System.out.println(top_label);
-                    TopName.setText(top_label);
-                    TopName.setVisible(true);
+                    for(int j =0;j<Ranking.size();j++){
+                        if(i==j){
+                            Ranking.get(j).setForeground(G_c[i]);
+                        }
+                        else{
+                            Ranking.get(j).setForeground(Color.BLACK);
+                        }
+                    }
+
                 }
             }
         });
@@ -687,10 +699,14 @@ public class trend extends JPanel{
                     cards.previous(GraphPanel1);
                     i--;
                     new Draw(G_c[i]);
-                    String top_label = musinsaArr.get(arrnum[i]);
-                    System.out.println(top_label);
-                    TopName.setText(top_label);
-                    TopName.setVisible(true);
+                    for(int j =0;j<Ranking.size();j++){
+                        if(i==j){
+                            Ranking.get(j).setForeground(G_c[i]);
+                        }
+                        else{
+                            Ranking.get(j).setForeground(Color.BLACK);
+                        }
+                    }
                 }
             }
         });
@@ -749,44 +765,48 @@ public class trend extends JPanel{
         panel.setLayout(null);
         panel.setBackground(Color.WHITE);
         panel.setBorder(new LineBorder(new Color(0, 0, 0)));
+        LocalDate now = LocalDate.now();
+        dayOfWeekValue = now.getDayOfWeek().getValue();
+        int weekNum = dayOfWeekValue+7;
 
-        JLabel undernum1 = new JLabel("1");
+
+        JLabel undernum1 = new JLabel(week[weekNum-7]);
         undernum1.setFont(f1);
         undernum1.setHorizontalAlignment(SwingConstants.CENTER);
         undernum1.setBounds(27, 555, 32, 32);
         panel.add(undernum1);
 
-        JLabel undernum2 = new JLabel("1");
+        JLabel undernum2 = new JLabel(week[weekNum-6]);
         undernum2.setHorizontalAlignment(SwingConstants.CENTER);
         undernum2.setFont(f1);
         undernum2.setBounds(143, 555, 32, 32);
         panel.add(undernum2);
 
-        JLabel undernum3 = new JLabel("1");
+        JLabel undernum3 = new JLabel(week[weekNum-5]);
         undernum3.setHorizontalAlignment(SwingConstants.CENTER);
         undernum3.setFont(f1);
         undernum3.setBounds(259, 555, 32, 32);
         panel.add(undernum3);
 
-        JLabel undernum4 = new JLabel("1");
+        JLabel undernum4 = new JLabel(week[weekNum-4]);
         undernum4.setHorizontalAlignment(SwingConstants.CENTER);
         undernum4.setFont(f1);
         undernum4.setBounds(375, 555, 32, 32);
         panel.add(undernum4);
 
-        JLabel undernum5 = new JLabel("1");
+        JLabel undernum5 = new JLabel(week[weekNum-3]);
         undernum5.setHorizontalAlignment(SwingConstants.CENTER);
         undernum5.setFont(f1);
         undernum5.setBounds(491, 555, 32, 32);
         panel.add(undernum5);
 
-        JLabel undernum6 = new JLabel("1");
+        JLabel undernum6 = new JLabel(week[weekNum-2]);
         undernum6.setHorizontalAlignment(SwingConstants.CENTER);
         undernum6.setFont(f1);
         undernum6.setBounds(608, 555, 32, 32);
         panel.add(undernum6);
 
-        JLabel undernum7 = new JLabel("1");
+        JLabel undernum7 = new JLabel(week[weekNum-1]);
         undernum7.setHorizontalAlignment(SwingConstants.CENTER);
         undernum7.setFont(f1);
         undernum7.setBounds(723, 555, 32, 32);
@@ -811,11 +831,6 @@ public class trend extends JPanel{
         verticalNum3.setBounds(10, 28, 32, 32);
         panel.add(verticalNum3);
 
-        TopName.setVisible(true);
-        TopName.setHorizontalAlignment(SwingConstants.CENTER);
-        TopName.setFont(f1);
-        TopName.setBounds(556, 0, 182, 32);
-        panel.add(TopName);
     }
 
 

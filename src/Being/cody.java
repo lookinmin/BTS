@@ -29,17 +29,18 @@ public class cody extends JFrame implements DropTargetListener {
     JLabel picLabel;
     JTextField txtwriting;
     private Font f1;
-    ImageIcon img = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\cancel.png");
-    ImageIcon img2 = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\minimize2.png");
-    ImageIcon cody = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\cody1.png");
-    ImageIcon trend = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\trend1.png");
-    ImageIcon home = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\home1.png");
-    ImageIcon MainLogo = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\MainLogo.png");
-    ImageIcon dragpic = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\dragpic2.png");
-    ImageIcon post = new ImageIcon("C:\\Users\\ancx1\\Desktop\\21년도 2학기\\오픈소스\\사용이미지\\post.png");
+    ImageIcon img = new ImageIcon("C:\\Users\\sdjmc\\OneDrive\\바탕 화면\\BTS_11.23\\cancel.png");
+    ImageIcon img2 = new ImageIcon("C:\\Users\\sdjmc\\OneDrive\\바탕 화면\\BTS_11.23\\minimize2.png");
+    ImageIcon cody = new ImageIcon("C:\\Users\\sdjmc\\OneDrive\\바탕 화면\\BTS_11.23\\cody1.png");
+    ImageIcon trend = new ImageIcon("C:\\Users\\sdjmc\\OneDrive\\바탕 화면\\BTS_11.23\\trend1.png");
+    ImageIcon home = new ImageIcon("C:\\Users\\sdjmc\\OneDrive\\바탕 화면\\BTS_11.23\\home1.png");
+    ImageIcon MainLogo = new ImageIcon("C:\\Users\\sdjmc\\OneDrive\\바탕 화면\\BTS_11.23\\MainLogo.png");
+    ImageIcon dragpic = new ImageIcon("C:\\Users\\sdjmc\\OneDrive\\바탕 화면\\BTS_11.23\\dragpic2.png");
+    ImageIcon post = new ImageIcon("C:\\Users\\sdjmc\\OneDrive\\바탕 화면\\BTS_11.23\\post.png");
     File pilePath;
 
     String imgEncode;
+    String userID;
 
     /**
      * Launch the application.
@@ -171,7 +172,19 @@ public class cody extends JFrame implements DropTargetListener {
         txtwriting.setBorder(new MatteBorder(0, 0, 1, 0, (Color) Color.BLACK));
         txtwriting.setColumns(10);
 
-        JLabel Name = new JLabel("ID");
+        String pilePath = "C:\\Users\\sdjmc\\IdeaProjects\\BTS-main2\\src\\nowID.txt";//BTS-main안 텍스트파일
+        userID = "";
+        try {
+            BufferedReader inFile = new BufferedReader(new FileReader(pilePath));
+            String sLine = null;
+            while( (sLine = inFile.readLine()) != null )
+                userID = sLine;
+
+        } catch (IOException e) {
+            System.out.println("입출력 오류");
+        }
+
+        JLabel Name = new JLabel(userID);
         Name.setFont(f1);
         Name.setBounds(24, 10, 164, 34);
         panel_1.add(Name);
@@ -246,19 +259,6 @@ public class cody extends JFrame implements DropTargetListener {
     }
 
     private void DBHandle(String postText) throws IOException {
-        String pilePath = "C:\\Users\\ancx1\\BTS\\src\\nowID.txt";//BTS-main안 텍스트파일
-        String userID = "";
-        try {
-            BufferedReader inFile = new BufferedReader(new FileReader(pilePath));
-            String sLine = null;
-            while( (sLine = inFile.readLine()) != null )
-                userID = sLine;
-
-        } catch (IOException e) {
-            System.out.println("입출력 오류");
-        }
-
-
         SimpleDateFormat timeformat = new SimpleDateFormat("yy.MM.dd-hh.mm.ss");
         Date time = new Date();
         String postTime = timeformat.format(time);
@@ -270,7 +270,7 @@ public class cody extends JFrame implements DropTargetListener {
         String server = "localhost"; // MySQL 서버 주소
         String database = "example"; // MySQL DATABASE 이름
         String user_name = "root"; //  MySQL 서버 아이디
-        String password = "minsu0418"; // MySQL 서버 비밀번호
+        String password = "qwer1234"; // MySQL 서버 비밀번호
 
         // 1.드라이버 로딩
         try {
@@ -411,5 +411,4 @@ public class cody extends JFrame implements DropTargetListener {
         System.out.println("dragExit");
     }
 }
-
 
