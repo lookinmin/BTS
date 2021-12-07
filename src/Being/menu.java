@@ -113,7 +113,7 @@ public class menu extends JFrame {
      */
     private void initialize() {
         frame = new JFrame();
-        frame.setBounds(100, 100, 1200, 860);
+        frame.setBounds(100, 100, 1400, 860);
         frame.setUndecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
@@ -123,7 +123,7 @@ public class menu extends JFrame {
         f1 = new Font("이사만루체 Medium",Font.PLAIN,17);
 
         JPanel MAINMENU = new JPanel();
-        MAINMENU.setBounds(0, 0, 1200, 860);
+        MAINMENU.setBounds(0, 0, 1400, 860);
         frame.getContentPane().add(MAINMENU);
         MAINMENU.setLayout(null);
         MAINMENU.setBackground(new Color(247,241,255));
@@ -131,7 +131,7 @@ public class menu extends JFrame {
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setBounds(0, 70, 1200, 760);
+        scrollPane.setBounds(0, 70, 1400, 760);
         scrollPane.getVerticalScrollBar().setUI(new PlayListScrollBarUI());
         MAINMENU.add(scrollPane);
         scrollPane.setBorder(new MatteBorder(0, 0, 0, 1, (Color) new Color(192, 192, 192)));
@@ -147,7 +147,7 @@ public class menu extends JFrame {
             rowNum[i] = 520;
         gbl_panel.rowHeights = rowNum;
         gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0};
-        gbl_panel.rowWeights = new double[]{0.0, 0.0};
+        gbl_panel.rowWeights = new double[]{};
         panel.setLayout(gbl_panel);
 
         for(int i=0;i<postData.size();i++){
@@ -159,13 +159,13 @@ public class menu extends JFrame {
 
         JPanel TopBar = new JPanel();
         TopBar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(128, 128, 128)));
-        TopBar.setBounds(0, 0, 1200, 70);
+        TopBar.setBounds(0, 0, 1400, 70);
         TopBar.setBackground(new Color(247,241,255));
         MAINMENU.add(TopBar);
         TopBar.setLayout(null);
 
         JButton Home = new JButton(home);
-        Home.setBounds(513, 10, 50, 50);
+        Home.setBounds(613, 10, 50, 50);
         TopBar.add(Home);
 
         Home.setFocusPainted(false);
@@ -173,14 +173,14 @@ public class menu extends JFrame {
         Home.setBorderPainted(false);
 
         JButton Go_Cody = new JButton(cody);
-        Go_Cody.setBounds(575, 10, 50, 50);
+        Go_Cody.setBounds(675, 10, 50, 50);
         TopBar.add(Go_Cody);
         Go_Cody.setBorderPainted(false);
         Go_Cody.setFocusPainted(false);
         Go_Cody.setContentAreaFilled(false);
 
         JButton GO_Trend = new JButton(trend);
-        GO_Trend.setBounds(637, 10, 50, 50);
+        GO_Trend.setBounds(737, 10, 50, 50);
         TopBar.add(GO_Trend);
         GO_Trend.setBorderPainted(false);
         GO_Trend.setFocusPainted(false);
@@ -188,27 +188,27 @@ public class menu extends JFrame {
 
 
         JButton Minimize = new JButton(img2);
-        Minimize.setBounds(1112, 19, 32, 32);
+        Minimize.setBounds(1312, 19, 32, 32);
         TopBar.add(Minimize);
         Minimize.setBorderPainted(false);
         Minimize.setFocusPainted(false);
         Minimize.setContentAreaFilled(false);
 
         JButton exit = new JButton(img);
-        exit.setBounds(1156, 19, 32, 32);
+        exit.setBounds(1356, 19, 32, 32);
         TopBar.add(exit);
         exit.setBorderPainted(false);
         exit.setFocusPainted(false);
         exit.setContentAreaFilled(false);
 
         JLabel Logo = new JLabel(MainLogo);
-        Logo.setBounds(12, 12, 200, 46);
+        Logo.setBounds(128, 12, 200, 46);
         TopBar.add(Logo);
 
         JPanel BottomPanel = new JPanel();
         BottomPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(128, 128, 128)));
         BottomPanel.setBackground(new Color(247,241,255));
-        BottomPanel.setBounds(0, 830, 1200, 30);
+        BottomPanel.setBounds(0, 830, 1400, 30);
         MAINMENU.add(BottomPanel);
 
 
@@ -302,12 +302,6 @@ public class menu extends JFrame {
         Likenum.setBounds(51, 400, 41, 24);
         panel.add(Likenum);
 
-        JLabel Undername = new JLabel(Nickname);
-        Undername.setHorizontalAlignment(SwingConstants.LEFT);
-        Undername.setFont(new Font("이사만루체 Medium", Font.BOLD, 12));
-        Undername.setBounds(96, 400, 74, 24);
-        panel.add(Undername);
-
         JLabel oneline = new JLabel(Comment);
         oneline.setFont(new Font("이사만루체 Medium", Font.PLAIN, 12));
         oneline.setBounds(22, 434, 311, 34);
@@ -348,7 +342,7 @@ public class menu extends JFrame {
                         pstmt = con.prepareStatement(sql);
 
                         pstmt.setInt(1, newLike);
-                        pstmt.setString(2, Undername.getText());
+                        pstmt.setString(2, Name.getText());
                         // 업데이트
                         int result = pstmt.executeUpdate();
                         if(result==1) {

@@ -241,6 +241,8 @@ public class login extends JFrame{
             }
             resultSet.close();
             statement.close();
+
+
             con.close();
         }catch (SQLException e){
             e.printStackTrace();

@@ -67,6 +67,7 @@ public class cody extends JFrame implements DropTargetListener {
 
     private void InitDragAndDrop() {
         picPanel = new JPanel();
+        picPanel.setBorder(new MatteBorder(1, 0, 1, 0, (Color) new Color(0, 0, 0)));
 
         picLabel = new JLabel(dragpic);
         picLabel.setBounds(0,0,512,512);
@@ -75,8 +76,7 @@ public class cody extends JFrame implements DropTargetListener {
 
         dropTarget = new DropTarget(picPanel, DnDConstants.ACTION_COPY_OR_MOVE, this, true, null);
         frame.getContentPane().add(picPanel, BorderLayout.CENTER);
-        picPanel.setSize(512, 512);
-        picPanel.setBounds(444, 150, 512, 512);
+        picPanel.setBounds(444, 151, 512, 513);
         picPanel.setBackground(Color.WHITE);
         picPanel.setLayout(null);
 
@@ -165,8 +165,15 @@ public class cody extends JFrame implements DropTargetListener {
         CODYLINE.add(panel_1);
         panel_1.setLayout(null);
 
+        JButton Post = new JButton(post);
+        Post.setBounds(452, 590, 50, 50);
+        panel_1.add(Post);
+        Post.setFocusPainted(false);
+        Post.setContentAreaFilled(false);
+        Post.setBorderPainted(false);
+
         txtwriting = new JTextField();
-        txtwriting.setBounds(24, 573, 471, 44);
+        txtwriting.setBounds(24, 598, 430, 44);
         panel_1.add(txtwriting);
         txtwriting.setFont(f1);
         txtwriting.setBorder(new MatteBorder(0, 0, 1, 0, (Color) Color.BLACK));
@@ -190,12 +197,7 @@ public class cody extends JFrame implements DropTargetListener {
         panel_1.add(Name);
         Name.setHorizontalAlignment(SwingConstants.LEFT);
 
-        JButton Post = new JButton(post);
-        Post.setBounds(438, 626, 64, 64);
-        panel_1.add(Post);
-        Post.setFocusPainted(false);
-        Post.setContentAreaFilled(false);
-        Post.setBorderPainted(false);
+
 
         Post.addActionListener(new ActionListener() {//글작성하기 버튼
             @Override
@@ -397,4 +399,3 @@ public class cody extends JFrame implements DropTargetListener {
         System.out.println("dragExit");
     }
 }
-

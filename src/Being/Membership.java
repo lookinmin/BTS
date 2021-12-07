@@ -228,7 +228,7 @@ public class Membership extends JFrame{
                         frame.dispose();
                     }
                     else{
-                        JOptionPane.showMessageDialog(null, "비밀번호가 다릅니다.");
+                        JOptionPane.showMessageDialog(null, "기존에 있는 ID 입니다.");
                     }
                 }
             }
